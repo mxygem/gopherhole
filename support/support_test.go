@@ -45,6 +45,13 @@ func TestCheckBoardDimensions(t *testing.T) {
 			b:    [][]string{[]string{"", "", ""}, []string{"", "", ""}},
 			err:  fmt.Errorf("Y dimension is incorrect. expected 2 found 3"),
 		},
+		{
+			name: "Both dimensions incorrect",
+			x:    2,
+			y:    2,
+			b:    [][]string{[]string{"", "", ""}, []string{"", "", ""}, []string{"", "", ""}},
+			err:  fmt.Errorf("X dimension is incorrect. expected 2 found 3, Y dimension is incorrect. expected 2 found 3"),
+		},
 	}
 
 	for _, tc := range testCases {
