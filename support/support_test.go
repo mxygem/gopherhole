@@ -25,6 +25,13 @@ func TestCheckBoardDimensions(t *testing.T) {
 			err:  nil,
 		},
 		{
+			name: "X dimension is 0",
+			x:    2,
+			y:    2,
+			b:    [][]string{},
+			err:  fmt.Errorf("X dimension is incorrect. expected 2 found 0, Y dimension not checked as X is 0"),
+		},
+		{
 			name: "Incorrect X dimension",
 			x:    2,
 			y:    2,
