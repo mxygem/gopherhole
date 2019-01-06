@@ -1,10 +1,8 @@
 # gopherhole
 
-My version of the logic puzzle game "Tents and Trees" by the folks at [Froxaz](https://www.frozax.com/). I've enjoyed playing their game on my phone and providing the inspiration! `gopherhole` has the same basic mechanics and rules, just runs in your terminal and uses gophers and holes instead of tents and trees. The game is like a mix of picross puzzles and minesweeper.
-
 *screenshot tbd*
 
-**Objective:** Use logic place gophers next to holes on the map so that each gopher has its own hole. The numbers around the board inform you how many gophers should be in each row/column.
+`gopherhole` is a game where you use logic to place gophers next to holes on the map so that each gopher has its own hole. The numbers around the board inform you how many gophers should be in each row/column. The game is like a mix of picross puzzles and minesweeper.
 
 ## Game Rules
 
@@ -22,6 +20,10 @@ My version of the logic puzzle game "Tents and Trees" by the folks at [Froxaz](h
 ## Contact
 
 Jayson Smith [@thatengjayson](https://twitter.com/thatengjayson)
+
+## Acknowledgements
+
+This is my version of the game "Tents and Trees Puzzles" by the folks at [Froxaz](https://www.frozax.com/). I've enjoyed playing their game on my phone and through some thinking about writing something to solve levels decided to write my own version of the game.
 
 ## License
 
