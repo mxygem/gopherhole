@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestNew(t *testing.T) {
+func TestNew_Dimensions(t *testing.T) {
 	testCases := []struct {
 		name string
 		x    int
