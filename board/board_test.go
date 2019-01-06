@@ -25,10 +25,31 @@ func TestNew_Dimensions(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(tt *testing.T) {
-			actual := New(tc.x, tc.y)
+			actual := New(tc.x, tc.y, 0)
 
 			assert.Equal(tt, tc.xl, len(actual))
 			assert.Equal(tt, tc.yl, len(actual[0]))
+		})
+	}
+}
+
+func TestDifficulty(t *testing.T) {
+	testCases := []struct {
+		name     string
+		x        int
+		y        int
+		d        int
+		expected int
+	}{
+		{name: "10x10 Empty", x: 10, y: 10, d: 0},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(tt *testing.T) {
+
+			actual := difficulty(tc.x, tc.y, tc.d)
+
+			assert.Equal(tt, tc.expected, actual)
 		})
 	}
 }
