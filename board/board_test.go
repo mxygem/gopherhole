@@ -106,11 +106,10 @@ func TestFillBoard(t *testing.T) {
 	}
 }
 
-func TestCanPlaceUp_Boundaries(t *testing.T) {
+func TestCanPlaceUp_WithinBounds(t *testing.T) {
 	testCases := []struct {
 		name string
-		xl   int
-		yl   int
+		bd   int
 		x    int
 		y    int
 		d    int
@@ -118,50 +117,80 @@ func TestCanPlaceUp_Boundaries(t *testing.T) {
 	}{
 		{
 			name: "Zeros, false",
-			xl:   0, yl: 0, x: 0, y: 0, d: 0,
+			bd:   0, x: 0, y: 0, d: 0,
 			ok: false,
 		},
 		{
 			name: "Inside upper bounds 4x4",
-			xl:   4, yl: 4, x: 1, y: 0, d: 0,
+			bd:   4, x: 1, y: 0, d: 0,
 			ok: true,
 		},
 		{
 			name: "Out of right bounds 4x4",
-			xl:   4, yl: 4, x: 0, y: 3, d: 1,
+			bd:   4, x: 0, y: 3, d: 1,
 			ok: false,
 		},
 		{
 			name: "Inside right bounds 4x4",
-			xl:   4, yl: 4, x: 0, y: 0, d: 1,
+			bd:   4, x: 0, y: 0, d: 1,
 			ok: true,
 		},
 		{
 			name: "Out of lower bounds 4x4",
-			xl:   4, yl: 4, x: 3, y: 0, d: 2,
+			bd:   4, x: 3, y: 0, d: 2,
 			ok: false,
 		},
 		{
 			name: "Inside lower bounds 4x4",
-			xl:   4, yl: 4, x: 0, y: 0, d: 2,
+			bd:   4, x: 0, y: 0, d: 2,
 			ok: false,
 		},
 		{
 			name: "Out of left bounds 4x4",
-			xl:   4, yl: 4, x: 0, y: 0, d: 3,
+			bd:   4, x: 0, y: 0, d: 3,
 			ok: false,
 		},
 		{
 			name: "Inside left bounds 4x4",
-			xl:   4, yl: 4, x: 0, y: 1, d: 3,
+			bd:   4, x: 0, y: 1, d: 3,
 			ok: true,
 		},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(tt *testing.T) {
+			b := New(tc.bd, tc.bd)
 
-			ok := canPlaceUp(tc.xl, tc.yl, tc.x, tc.y, tc.d)
+			ok := canPlaceUp(tc.x, tc.y, tc.d, b)
+
+			assert.Equal(tt, tc.ok, ok)
+		})
+	}
+}
+
+func TestCanPlaceUp_SpaceOpen(t *testing.T) {
+	b := &Board{
+		[]string{" ", " ", "g", "o"},
+		[]string{"o", " ", " ", " "},
+		[]string{"g", " ", " ", " "},
+		[]string{" ", "o", "g", " "},
+	}
+
+	testCases := []struct {
+		name string
+		x    int
+		y    int
+		ok   bool
+	}{
+		{
+			name: "Empty, true", x: 0, y: 0, ok: true,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(tt *testing.T) {
+
+			ok := spaceOpen(tc.x, tc.y, b)
 
 			assert.Equal(tt, tc.ok, ok)
 		})

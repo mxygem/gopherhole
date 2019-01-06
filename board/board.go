@@ -116,8 +116,16 @@ func fillBoard(d, s int, bo *Board) {
 	}
 }
 
-func canPlaceUp(xl, yl, x, y, d int) bool {
-	return withinBounds(xl, yl, x, y, d)
+func canPlaceUp(x, y, d int, b Board) bool {
+	xl := len(b)
+	yl := len(b[0])
+
+	ok := withinBounds(xl, yl, x, y, d)
+	if !ok {
+		return ok
+	}
+
+	return spaceOpen(x-1, y, &b)
 }
 
 func withinBounds(xl, yl, x, y, d int) bool {
@@ -140,6 +148,10 @@ func withinBounds(xl, yl, x, y, d int) bool {
 		}
 	}
 
+	return true
+}
+
+func spaceOpen(x, y int, b *Board) bool {
 	return true
 }
 
