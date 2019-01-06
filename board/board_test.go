@@ -59,3 +59,25 @@ func TestDifficulty(t *testing.T) {
 		})
 	}
 }
+
+// func TestFillBoard(t *testing.T) {
+// 	testCases := []struct {
+// 		name string
+// 		d    int
+// 		b    *Board
+// 	}{
+// 		{name: "Empty", d: 0, b: &Board{[]string{"", "", "", ""}, []string{"", "", "", ""}, []string{"", "", "", ""}, []string{"", "", "", ""}}},
+// 		{name: "Easy", d: 1},
+// 		{name: "Medium", d: 2},
+// 		{name: "Hard", d: 3},
+// 	}
+
+// 	for _, tc := range testCases {
+// 		t.Run(tc.name, func(tt *testing.T) {
+// 			fillBoard(tc.d, 1234, tc.b)
+
+// 			// assert.Equal(tt, tc.xl, len(actual))
+// 			// assert.Equal(tt, tc.yl, len(actual[0]))
+// 		})
+// 	}
+// }
