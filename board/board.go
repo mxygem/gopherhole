@@ -131,7 +131,7 @@ func withinBounds(xl, yl, x, y, d int) bool {
 			return false
 		}
 	case 2: // lower
-		if x >= (xl - 1) {
+		if x <= (xl - 1) {
 			return false
 		}
 	}
