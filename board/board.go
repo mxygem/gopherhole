@@ -37,6 +37,16 @@ func fillBoard(d int, b *Board) {
 
 // difficulty determines how many gopher/hole
 // pairs should be used to fill in the current board
+// levels:
+// 0 - empty
+// 1 - easy - 25% of space
+// 2 - medium - 50% of space
+// 3 - hard - 75% of space
 func difficulty(x, y, d int) int {
-	return 0
+	switch d {
+	case 1:
+		return 3
+	default:
+		return 0
+	}
 }
