@@ -1,6 +1,7 @@
 package board
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -80,10 +81,10 @@ func TestFillBoard(t *testing.T) {
 			name: "Easy",
 			d:    1,
 			b: &Board{
-				[]string{" ", " ", "g", "o"},
-				[]string{"o", " ", " ", " "},
-				[]string{"g", " ", " ", " "},
-				[]string{" ", "o", " ", " "},
+				[]string{" ", " ", " ", " "},
+				[]string{" ", " ", "o", "o"},
+				[]string{" ", " ", " ", " "},
+				[]string{" ", " ", " ", "o"},
 			},
 		},
 		// {name: "Medium", d: 2},
@@ -93,13 +94,13 @@ func TestFillBoard(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(tt *testing.T) {
 			b := New(4, 4)
-			// fmt.Println("board before fill")
-			// printBoard(&b)
+			fmt.Println("board before fill")
+			printBoard(&b)
 
 			fillBoard(tc.d, 1, &b)
 
-			// fmt.Println("board after fill")
-			// printBoard(&b)
+			fmt.Println("board after fill")
+			printBoard(&b)
 
 			assert.Equal(tt, tc.b, &b)
 		})

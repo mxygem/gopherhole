@@ -9,6 +9,13 @@ import (
 
 type Board [][]string
 
+type positions struct {
+	x  int
+	y  int
+	gx int
+	gy int
+}
+
 // New returns a new board to the user based on
 // an input dimension number. The board size
 // returned defaults to 4 for anything under that
@@ -54,49 +61,11 @@ func fillBoard(d, s int, bo *Board) {
 
 	// find spots for all the desired gopher/hole pairs
 	for i := 0; i < dc; i++ {
-		x, y := emptyArea(xl, yl, b)
-		fmt.Printf("empty area at x: %d y: %d\n", x, y)
-
-		// var gx, gy int
-		gopherEmpty := false
-		for gopherEmpty == false {
-			// determine gopher position
-			// position is "random" while taking into
-			// account the edge of the board
-			// 0 = up
-			// 1 = right
-			// 2 = down
-			// 3 = left
-			di := rand.Intn(4)
-			fmt.Println(di)
-
-			// TODO: Gopher placement direction
-			// 3. If unable to place gopher, will need to
-			// 		find a new spot for both
-
-			// find open area for gopher
-			switch di {
-			case 0:
-				fmt.Printf("gopher up from x: %d y: %d\n", x, y)
-				// ok := canPlaceUp()
-				// b[x-1][y] = "g"
-			case 1:
-				fmt.Printf("gopher right from x: %d y: %d\n", x, y)
-				// ok := canPlaceRight()
-				// b[x][y+1] = "g"
-			case 2:
-				fmt.Printf("gopher down from x: %d y: %d\n", x, y)
-				// ok := canPlaceDown()
-				// b[x+1][y] = "g"
-			case 3:
-				fmt.Printf("gopher left from x: %d y: %d\n", x, y)
-				// ok := canPlaceLeft()
-				// b[x][y-1] = "g"
-			}
-		}
-
+		pos := findPositions(xl, yl, d, b)
 		// place hole
-		b[x][y] = "o"
+		b[pos.x][pos.y] = "o"
+		// place gopher
+		b[pos.gx][pos.gy] = "g"
 
 		printBoard(&b)
 	}
@@ -127,6 +96,19 @@ func difficulty(x, y, d int) int {
 	return int(math.Ceil((float64(x*y) * diffLevels[d]) / 2))
 }
 
+func findPositions(xl, yl, d int, b Board) positions {
+	x, y := emptyArea(xl, yl, b)
+	fmt.Printf("empty area at x: %d y: %d\n", x, y)
+
+	gx, gy := gopherArea(x, y, d, b)
+	fmt.Printf("gopher area at x: %d y: %d\n", x, y)
+	if gx == -1 {
+		return findPositions(xl, yl, d, b)
+	}
+
+	return positions{x: x, y: y, gx: gx, gy: gy}
+}
+
 func emptyArea(xl, yl int, b Board) (int, int) {
 	// determine hole position and make sure it's
 	// empty, otherwise, look elsewhere. Not an
@@ -140,6 +122,50 @@ func emptyArea(xl, yl int, b Board) (int, int) {
 	}
 
 	return x, y
+}
+
+// Similar to emptyArea, except it checks for in
+// bounds before checking for empty.
+// Returns -1, -1 if no suitable space was found
+func gopherArea(x, y, d int, b Board) (int, int) {
+	gopherEmpty := false
+	for gopherEmpty == false {
+		// determine gopher position
+		// position is "random" while taking into
+		// account the edge of the board
+		// 0 = up
+		// 1 = right
+		// 2 = down
+		// 3 = left
+		di := rand.Intn(4)
+		fmt.Println(di)
+
+		// TODO: Gopher placement direction
+		// 3. If unable to place gopher, will need to
+		// 		find a new spot for both
+
+		// find open area for gopher
+		switch di {
+		case 0:
+			fmt.Printf("gopher up from x: %d y: %d\n", x, y)
+			// ok := canPlaceUp()
+			// b[x-1][y] = "g"
+		case 1:
+			fmt.Printf("gopher right from x: %d y: %d\n", x, y)
+			// ok := canPlaceRight()
+			// b[x][y+1] = "g"
+		case 2:
+			fmt.Printf("gopher down from x: %d y: %d\n", x, y)
+			// ok := canPlaceDown()
+			// b[x+1][y] = "g"
+		case 3:
+			fmt.Printf("gopher left from x: %d y: %d\n", x, y)
+			// ok := canPlaceLeft()
+			// b[x][y-1] = "g"
+		}
+	}
+
+	return -1, -1
 }
 
 func canPlace(x, y, d int, b Board) bool {
@@ -198,12 +224,15 @@ func directionOpen(x, y, d int, b Board) bool {
 }
 
 func spaceOpen(x, y int, bo *Board) bool {
+	fmt.Printf("checking for open space at %d,%d\n", x, y)
 	b := *bo
 
 	if b[x][y] == " " {
+		fmt.Println("open")
 		return true
 	}
 
+	fmt.Println("not open")
 	return false
 }
 
