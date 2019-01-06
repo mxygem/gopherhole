@@ -134,6 +134,8 @@ func withinBounds(xl, yl, x, y, d int) bool {
 		if x <= (xl - 1) {
 			return false
 		}
+	case 3: // left
+		return false
 	}
 
 	return true
