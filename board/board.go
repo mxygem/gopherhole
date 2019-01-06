@@ -151,8 +151,14 @@ func withinBounds(xl, yl, x, y, d int) bool {
 	return true
 }
 
-func spaceOpen(x, y int, b *Board) bool {
-	return true
+func spaceOpen(x, y int, bo *Board) bool {
+	b := *bo
+
+	if b[x][y] == " " {
+		return true
+	}
+
+	return false
 }
 
 func printBoard(b *Board) {
