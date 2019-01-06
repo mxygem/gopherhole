@@ -13,3 +13,7 @@
 * Timing info
 * Reset button
 * Undo button
+
+## Thoughts/ideas
+
+* Possibly change to check for empty hole and make sure there is at least one other empty hole in the surrounding 8 areas? Currently looking for open spot, then randomly checking in a direction to see if it's in bounds and empty

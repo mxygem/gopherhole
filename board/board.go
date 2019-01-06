@@ -52,10 +52,8 @@ func fillBoard(d, s int, bo *Board) {
 	yl := len(b[0])
 	dc := difficulty(xl, yl, d)
 
+	// find spots for all the desired gopher/hole pairs
 	for i := 0; i < dc; i++ {
-		// possibly change to check for empty hole and
-		// make sure there is at least one other empty
-		// hole in the surrounding 8 areas?
 		x, y := emptyArea(xl, yl, b)
 		fmt.Printf("empty area at x: %d y: %d\n", x, y)
 
@@ -76,7 +74,7 @@ func fillBoard(d, s int, bo *Board) {
 			// 3. If unable to place gopher, will need to
 			// 		find a new spot for both
 
-			// place gopher
+			// find open area for gopher
 			switch di {
 			case 0:
 				fmt.Printf("gopher up from x: %d y: %d\n", x, y)
