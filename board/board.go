@@ -126,6 +126,10 @@ func withinBounds(xl, yl, x, y, d int) bool {
 		if x == 0 {
 			return false
 		}
+	case 1: // right
+		if y >= (yl - 1) {
+			return false
+		}
 	}
 
 	return true

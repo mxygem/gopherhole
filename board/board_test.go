@@ -122,9 +122,14 @@ func TestCanPlaceUp_Boundaries(t *testing.T) {
 			ok: false,
 		},
 		{
-			name: "Within upper bounds",
-			xl:   0, yl: 0, x: 1, y: 0, d: 0,
+			name: "Within upper bounds 4x4",
+			xl:   4, yl: 4, x: 1, y: 0, d: 0,
 			ok: true,
+		},
+		{
+			name: "Out of right bounds 4x4",
+			xl:   4, yl: 4, x: 0, y: 3, d: 1,
+			ok: false,
 		},
 	}
 
