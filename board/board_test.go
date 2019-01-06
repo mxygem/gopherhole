@@ -171,9 +171,6 @@ func TestCanPlaceUp_WithinBounds(t *testing.T) {
 func TestCanPlaceUp_SpaceOpen(t *testing.T) {
 	b := &Board{
 		[]string{" ", " ", "g", "o"},
-		[]string{"o", " ", " ", " "},
-		[]string{"g", " ", " ", " "},
-		[]string{" ", "o", "g", " "},
 	}
 
 	testCases := []struct {
@@ -183,7 +180,10 @@ func TestCanPlaceUp_SpaceOpen(t *testing.T) {
 		ok   bool
 	}{
 		{
-			name: "Empty, true", x: 0, y: 0, ok: true,
+			name: "Empty", x: 0, y: 0, ok: true,
+		},
+		{
+			name: "Not empty", x: 0, y: 2, ok: false,
 		},
 	}
 
