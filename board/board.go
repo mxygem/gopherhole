@@ -121,7 +121,14 @@ func canPlaceUp(xl, yl, x, y, d int) bool {
 }
 
 func inBounds(xl, yl, x, y, d int) bool {
-	return false
+	switch d {
+	case 0: // up
+		if x == 0 {
+			return false
+		}
+	}
+
+	return true
 }
 
 func printBoard(b *Board) {
