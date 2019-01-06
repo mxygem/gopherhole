@@ -66,47 +66,48 @@ func fillBoard(d, s int, bo *Board) {
 	dc := difficulty(xl, yl, d)
 
 	for i := 0; i < dc; i++ {
-		// determine hole position
-		x := rand.Intn(xl)
-		y := rand.Intn(yl)
-		fmt.Printf("hole at x: %d y: %d\n", x, y)
+		// possibly change to check for empty hole and
+		// make sure there is at least one other empty
+		// hole in the surrounding 8 areas?
+		x, y := emptyArea(xl, yl, b)
+		fmt.Printf("empty area at x: %d y: %d\n", x, y)
 
-		// determine gopher position
-		// position is "random" while taking into
-		// account the edge of the board
-		// 0 = up
-		// 1 = right
-		// 2 = down
-		// 3 = left
-		di := rand.Intn(4)
-		fmt.Println(di)
+		// var gx, gy int
+		gopherEmpty := false
+		for gopherEmpty == false {
+			// determine gopher position
+			// position is "random" while taking into
+			// account the edge of the board
+			// 0 = up
+			// 1 = right
+			// 2 = down
+			// 3 = left
+			di := rand.Intn(4)
+			fmt.Println(di)
 
-		// TODO: Gopher placement direction
-		// 1. Boundary checks - make sure position is
-		//		within board limits
-		// 2. Occupation checks - make sure position
-		//		doesn't already have data
-		// 3. If unable to place gopher, will need to
-		// 		find a new spot for both
+			// TODO: Gopher placement direction
+			// 3. If unable to place gopher, will need to
+			// 		find a new spot for both
 
-		// place gopher
-		switch di {
-		case 0:
-			fmt.Printf("gopher up from x: %d y: %d\n", x, y)
-			// ok := canPlaceUp()
-			// b[x-1][y] = "g"
-		case 1:
-			fmt.Printf("gopher right from x: %d y: %d\n", x, y)
-			// ok := canPlaceRight()
-			// b[x][y+1] = "g"
-		case 2:
-			fmt.Printf("gopher down from x: %d y: %d\n", x, y)
-			// ok := canPlaceDown()
-			// b[x+1][y] = "g"
-		case 3:
-			fmt.Printf("gopher left from x: %d y: %d\n", x, y)
-			// ok := canPlaceLeft()
-			// b[x][y-1] = "g"
+			// place gopher
+			switch di {
+			case 0:
+				fmt.Printf("gopher up from x: %d y: %d\n", x, y)
+				// ok := canPlaceUp()
+				// b[x-1][y] = "g"
+			case 1:
+				fmt.Printf("gopher right from x: %d y: %d\n", x, y)
+				// ok := canPlaceRight()
+				// b[x][y+1] = "g"
+			case 2:
+				fmt.Printf("gopher down from x: %d y: %d\n", x, y)
+				// ok := canPlaceDown()
+				// b[x+1][y] = "g"
+			case 3:
+				fmt.Printf("gopher left from x: %d y: %d\n", x, y)
+				// ok := canPlaceLeft()
+				// b[x][y-1] = "g"
+			}
 		}
 
 		// place hole
@@ -116,7 +117,22 @@ func fillBoard(d, s int, bo *Board) {
 	}
 }
 
-func canPlaceUp(x, y, d int, b Board) bool {
+func emptyArea(xl, yl int, b Board) (int, int) {
+	// determine hole position and make sure it's
+	// empty, otherwise, look elsewhere. Not an
+	// optimal solution.
+	var x, y int
+	empty := false
+	for empty == false {
+		x = rand.Intn(xl)
+		y = rand.Intn(yl)
+		empty = spaceOpen(x, y, &b)
+	}
+
+	return x, y
+}
+
+func canPlace(x, y, d int, b Board) bool {
 	xl := len(b)
 	yl := len(b[0])
 
@@ -125,7 +141,19 @@ func canPlaceUp(x, y, d int, b Board) bool {
 		return ok
 	}
 
-	return spaceOpen(x-1, y, &b)
+	switch d {
+	case 0:
+		return spaceOpen(x-1, y, &b)
+	case 1:
+		return spaceOpen(x, y+1, &b)
+	case 2:
+		return spaceOpen(x+1, y, &b)
+	case 3:
+		return spaceOpen(x, y-1, &b)
+	default:
+		return false
+	}
+
 }
 
 func withinBounds(xl, yl, x, y, d int) bool {

@@ -106,7 +106,7 @@ func TestFillBoard(t *testing.T) {
 	}
 }
 
-func TestCanPlaceUp_WithinBounds(t *testing.T) {
+func TestCanPlace_WithinBounds(t *testing.T) {
 	testCases := []struct {
 		name string
 		bd   int
@@ -116,7 +116,7 @@ func TestCanPlaceUp_WithinBounds(t *testing.T) {
 		ok   bool
 	}{
 		{
-			name: "Zeros, false",
+			name: "Outside upper bounds 4x4/Zeros",
 			bd:   0, x: 0, y: 0, d: 0,
 			ok: false,
 		},
@@ -161,7 +161,7 @@ func TestCanPlaceUp_WithinBounds(t *testing.T) {
 		t.Run(tc.name, func(tt *testing.T) {
 			b := New(tc.bd, tc.bd)
 
-			ok := canPlaceUp(tc.x, tc.y, tc.d, b)
+			ok := canPlace(tc.x, tc.y, tc.d, b)
 
 			assert.Equal(tt, tc.ok, ok)
 		})
