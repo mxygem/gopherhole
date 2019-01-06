@@ -7,6 +7,8 @@ import (
 	"github.com/jaysonesmith/gopherhole/board"
 )
 
+// CheckBoardDimensions checks the current board
+// to see whether it is the expected dimensions
 func CheckBoardDimensions(x, y int, b board.Board) error {
 	var errs []string
 
