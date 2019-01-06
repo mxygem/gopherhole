@@ -20,8 +20,7 @@ func TestNew(t *testing.T) {
 		{name: "3 defaults to 4x4", x: 3, y: 3, xl: 4, yl: 4},
 		{name: "4 returns 4x4", x: 4, y: 4, xl: 4, yl: 4},
 		{name: "10 returns 10x10", x: 10, y: 10, xl: 10, yl: 10},
-		{name: "1000 returns 10x10", x: 1000,
-			y: 1000, xl: 1000, yl: 1000},
+		{name: "1000 returns 10x10", x: 1000, y: 1000, xl: 1000, yl: 1000},
 	}
 
 	for _, tc := range testCases {
