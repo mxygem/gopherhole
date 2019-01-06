@@ -128,8 +128,12 @@ func emptyArea(xl, yl int, b Board) (int, int) {
 // bounds before checking for empty.
 // Returns -1, -1 if no suitable space was found
 func gopherArea(x, y, d int, b Board) (int, int) {
-	gopherEmpty := false
+	var gopherEmpty bool
+	gx := x
+	gy := y
+
 	for gopherEmpty == false {
+		fmt.Println("gopherEmpty:", gopherEmpty)
 		// determine gopher position
 		// position is "random" while taking into
 		// account the edge of the board
@@ -140,32 +144,48 @@ func gopherArea(x, y, d int, b Board) (int, int) {
 		di := rand.Intn(4)
 		fmt.Println(di)
 
-		// TODO: Gopher placement direction
-		// 3. If unable to place gopher, will need to
-		// 		find a new spot for both
-
-		// find open area for gopher
+		// check for open position in direction
 		switch di {
 		case 0:
 			fmt.Printf("gopher up from x: %d y: %d\n", x, y)
-			// ok := canPlaceUp()
-			// b[x-1][y] = "g"
+			ok := canPlace(x, y, d, b)
+			if !ok {
+				return gopherArea(x, y, d, b)
+			}
+
+			gx--
+			gopherEmpty = true
 		case 1:
 			fmt.Printf("gopher right from x: %d y: %d\n", x, y)
-			// ok := canPlaceRight()
-			// b[x][y+1] = "g"
+			ok := canPlace(x, y, d, b)
+			if !ok {
+				return gopherArea(x, y, d, b)
+			}
+
+			gy++
+			gopherEmpty = true
 		case 2:
 			fmt.Printf("gopher down from x: %d y: %d\n", x, y)
-			// ok := canPlaceDown()
-			// b[x+1][y] = "g"
+			ok := canPlace(x, y, d, b)
+			if !ok {
+				return gopherArea(x, y, d, b)
+			}
+
+			gx++
+			gopherEmpty = true
 		case 3:
 			fmt.Printf("gopher left from x: %d y: %d\n", x, y)
-			// ok := canPlaceLeft()
-			// b[x][y-1] = "g"
+			ok := canPlace(x, y, d, b)
+			if !ok {
+				return gopherArea(x, y, d, b)
+			}
+
+			gy--
+			gopherEmpty = true
 		}
 	}
 
-	return -1, -1
+	return gx, gy
 }
 
 func canPlace(x, y, d int, b Board) bool {
@@ -174,11 +194,13 @@ func canPlace(x, y, d int, b Board) bool {
 
 	ok := withinBounds(xl, yl, x, y, d)
 	if !ok {
+		fmt.Println("not within bounds")
 		return ok
 	}
 
 	ok = directionOpen(x, y, d, b)
 	if !ok {
+		fmt.Println("direction not open")
 		return ok
 	}
 
