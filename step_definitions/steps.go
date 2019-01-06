@@ -8,13 +8,13 @@ import (
 )
 
 func (sc *ScenarioContext) ANewGameIsRequestedWithNoBoardSizeSet() error {
-	sc.Board = board.New(0, 0, 0)
+	sc.Board = board.New(0, 0)
 
 	return nil
 }
 
 func (sc *ScenarioContext) ANewGameIsRequestedWithAXBoardSize(x, y int) error {
-	sc.Board = board.New(x, y, 0)
+	sc.Board = board.New(x, y)
 
 	return nil
 }

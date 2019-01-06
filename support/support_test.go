@@ -21,7 +21,7 @@ func TestCheckBoardDimensions(t *testing.T) {
 			name: "Correct dimensions",
 			x:    2,
 			y:    2,
-			b:    [][]string{[]string{"", ""}, []string{"", ""}},
+			b:    [][]string{[]string{" ", " "}, []string{" ", " "}},
 			err:  nil,
 		},
 		{
@@ -35,21 +35,21 @@ func TestCheckBoardDimensions(t *testing.T) {
 			name: "Incorrect X dimension",
 			x:    2,
 			y:    2,
-			b:    [][]string{[]string{"", ""}},
+			b:    [][]string{[]string{" ", " "}},
 			err:  fmt.Errorf("X dimension is incorrect. expected 2 found 1"),
 		},
 		{
 			name: "Correct X but incorrect y dimension",
 			x:    2,
 			y:    2,
-			b:    [][]string{[]string{"", "", ""}, []string{"", "", ""}},
+			b:    [][]string{[]string{" ", " ", " "}, []string{" ", " ", " "}},
 			err:  fmt.Errorf("Y dimension is incorrect. expected 2 found 3"),
 		},
 		{
 			name: "Both dimensions incorrect",
 			x:    2,
 			y:    2,
-			b:    [][]string{[]string{"", "", ""}, []string{"", "", ""}, []string{"", "", ""}},
+			b:    [][]string{[]string{" ", " ", " "}, []string{" ", " ", " "}, []string{" ", " ", " "}},
 			err:  fmt.Errorf("X dimension is incorrect. expected 2 found 3, Y dimension is incorrect. expected 2 found 3"),
 		},
 	}

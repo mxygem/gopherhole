@@ -1,5 +1,9 @@
 package stepdefinitions
 
+import (
+	"github.com/jaysonesmith/gopherhole/board"
+)
+
 type ScenarioContext struct {
-	Board [][]string
+	Board board.Board
 }

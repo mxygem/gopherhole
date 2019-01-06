@@ -1,6 +1,11 @@
 package board
 
-import "math"
+import (
+	"fmt"
+	"math"
+	"math/rand"
+	"time"
+)
 
 type Board [][]string
 
@@ -8,13 +13,16 @@ type Board [][]string
 // an input dimension number. The board size
 // returned defaults to 4 for anything under that
 // size.
-func New(x, y, d int) Board {
+func New(x, y int) Board {
 	x = defaultDim(x)
 	y = defaultDim(y)
 
 	b := make(Board, x)
 	for i := range b {
 		b[i] = make([]string, y)
+		for j := range b[i] {
+			b[i][j] = " "
+		}
 	}
 
 	return b
@@ -44,11 +52,76 @@ func difficulty(x, y, d int) int {
 
 // fillBoard pseudorandomly fills the board with
 // the desired number of gopher/hole pairs it
-// Also allows for a seed to be specified for testing
-// purposes
-// func fillBoard(p, s int, b *Board) {
-// 	if p == 0 {
-// 		return
-// 	}
+// Also allows for a seed to be specified for
+// deterministic generation
+func fillBoard(d, s int, bo *Board) {
+	b := *bo
+	if d == 0 {
+		return
+	}
 
-// }
+	setRand(s)
+	xl := len(b)
+	yl := len(b[0])
+	dc := difficulty(xl, yl, d)
+
+	for i := 0; i < dc; i++ {
+		// determine hole position
+		x := rand.Intn(xl)
+		y := rand.Intn(yl)
+		fmt.Printf("hole at x: %d y: %d\n", x, y)
+		// place hole
+		b[x][y] = "o"
+
+		// determine gopher position
+		// position is "random" while taking into
+		// account the edge of the board
+		// 0 = up
+		// 1 = right
+		// 2 = down
+		// 3 = left
+		di := rand.Intn(4)
+		fmt.Println(di)
+
+		// TODO: Gopher placement direction
+		// 1. Boundary checks - make sure position is
+		//		within board limits
+		// 2. Occupation checks - make sure position
+		//		doesn't already have data
+
+		// place gopher
+		switch di {
+		case 0:
+			fmt.Printf("gopher up from x: %d y: %d\n", x, y)
+			b[x-1][y] = "g"
+		case 1:
+			fmt.Printf("gopher right from x: %d y: %d\n", x, y)
+			b[x][y+1] = "g"
+		case 2:
+			fmt.Printf("gopher down from x: %d y: %d\n", x, y)
+			b[x+1][y] = "g"
+		case 3:
+			fmt.Printf("gopher left from x: %d y: %d\n", x, y)
+			b[x][y-1] = "g"
+		}
+
+		printBoard(&b)
+	}
+}
+
+func printBoard(b *Board) {
+	for _, r := range *b {
+		fmt.Println(r)
+	}
+}
+
+// setRand sets the intended seed otherwise uses
+// a time based seed
+func setRand(s int) {
+	if s > 0 {
+		rand.NewSource(int64(s))
+		return
+	}
+
+	rand.NewSource(time.Now().UnixNano())
+}
