@@ -43,8 +43,11 @@ func TestDifficulty(t *testing.T) {
 	}{
 		{name: "10x10 Empty", x: 10, y: 10, d: 0, expected: 0},
 		{name: "10x10 Easy", x: 10, y: 10, d: 1, expected: 15},
-		{name: "10x10 Medium", x: 10, y: 10, d: 2, expected: 30},
-		{name: "10x10 Hard", x: 10, y: 10, d: 3, expected: 40},
+		{name: "10x10 Medium", x: 10, y: 10, d: 2, expected: 25},
+		{name: "10x10 Hard", x: 10, y: 10, d: 3, expected: 35},
+		{name: "4x4 Easy", x: 4, y: 4, d: 1, expected: 3},
+		{name: "4x4 Medium", x: 4, y: 4, d: 2, expected: 4},
+		{name: "4x4 Hard", x: 4, y: 4, d: 3, expected: 6},
 	}
 
 	for _, tc := range testCases {
