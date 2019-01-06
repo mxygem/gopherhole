@@ -136,6 +136,11 @@ func TestCanPlaceUp_Boundaries(t *testing.T) {
 			xl:   4, yl: 4, x: 0, y: 0, d: 1,
 			ok: true,
 		},
+		{
+			name: "Out of lower bounds 4x4",
+			xl:   4, yl: 4, x: 3, y: 0, d: 2,
+			ok: false,
+		},
 	}
 
 	for _, tc := range testCases {
