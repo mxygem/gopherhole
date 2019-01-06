@@ -70,8 +70,6 @@ func fillBoard(d, s int, bo *Board) {
 		x := rand.Intn(xl)
 		y := rand.Intn(yl)
 		fmt.Printf("hole at x: %d y: %d\n", x, y)
-		// place hole
-		b[x][y] = "o"
 
 		// determine gopher position
 		// position is "random" while taking into
@@ -88,25 +86,42 @@ func fillBoard(d, s int, bo *Board) {
 		//		within board limits
 		// 2. Occupation checks - make sure position
 		//		doesn't already have data
+		// 3. If unable to place gopher, will need to
+		// 		find a new spot for both
 
 		// place gopher
 		switch di {
 		case 0:
 			fmt.Printf("gopher up from x: %d y: %d\n", x, y)
-			b[x-1][y] = "g"
+			// ok := canPlaceUp()
+			// b[x-1][y] = "g"
 		case 1:
 			fmt.Printf("gopher right from x: %d y: %d\n", x, y)
-			b[x][y+1] = "g"
+			// ok := canPlaceRight()
+			// b[x][y+1] = "g"
 		case 2:
 			fmt.Printf("gopher down from x: %d y: %d\n", x, y)
-			b[x+1][y] = "g"
+			// ok := canPlaceDown()
+			// b[x+1][y] = "g"
 		case 3:
 			fmt.Printf("gopher left from x: %d y: %d\n", x, y)
-			b[x][y-1] = "g"
+			// ok := canPlaceLeft()
+			// b[x][y-1] = "g"
 		}
+
+		// place hole
+		b[x][y] = "o"
 
 		printBoard(&b)
 	}
+}
+
+func canPlaceUp(xl, yl, x, y, d int) bool {
+	return inBounds(xl, yl, x, y, d)
+}
+
+func inBounds(xl, yl, x, y, d int) bool {
+	return false
 }
 
 func printBoard(b *Board) {

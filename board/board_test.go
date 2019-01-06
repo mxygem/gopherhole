@@ -82,7 +82,7 @@ func TestFillBoard(t *testing.T) {
 			b: &Board{
 				[]string{" ", " ", "g", "o"},
 				[]string{"o", " ", " ", " "},
-				[]string{"g", "g", " ", " "},
+				[]string{"g", " ", " ", " "},
 				[]string{" ", "o", " ", " "},
 			},
 		},
@@ -106,8 +106,32 @@ func TestFillBoard(t *testing.T) {
 	}
 }
 
-// func printBoard(b *Board) {
-// 	for _, r := range *b {
-// 		fmt.Println(r)
-// 	}
-// }
+func TestCanPlaceUp_Boundaries(t *testing.T) {
+	testCases := []struct {
+		name string
+		xl   int
+		yl   int
+		x    int
+		y    int
+		d    int
+		ok   bool
+	}{
+		{
+			name: "Zeros, false",
+			xl:   0,
+			yl:   0,
+			x:    0,
+			y:    0,
+			d:    0,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(tt *testing.T) {
+
+			ok := canPlaceUp(tc.xl, tc.yl, tc.x, tc.y, tc.d)
+
+			assert.Equal(tt, tc.ok, ok)
+		})
+	}
+}
