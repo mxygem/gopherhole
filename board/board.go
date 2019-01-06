@@ -36,26 +36,13 @@ func defaultDim(i int) int {
 	return i
 }
 
-var diffLevels = map[int]float64{0: 0.0, 1: 0.3, 2: 0.5, 3: 0.7}
-
-// difficulty determines how many gopher/hole
-// pairs should be used to fill in the current
-// board for the desired difficulty
-// levels:
-// 0 - empty
-// 1 - easy - 30% of space
-// 2 - medium - 50% of space
-// 3 - hard - 70% of space
-func difficulty(x, y, d int) int {
-	return int(math.Ceil((float64(x*y) * diffLevels[d]) / 2))
-}
-
 // fillBoard pseudorandomly fills the board with
 // the desired number of gopher/hole pairs it
 // Also allows for a seed to be specified for
 // deterministic generation
 func fillBoard(d, s int, bo *Board) {
 	b := *bo
+	// empty difficulty
 	if d == 0 {
 		return
 	}
@@ -117,6 +104,31 @@ func fillBoard(d, s int, bo *Board) {
 	}
 }
 
+// setRand sets the intended seed otherwise uses
+// a time based seed
+func setRand(s int) {
+	if s > 0 {
+		rand.NewSource(int64(s))
+		return
+	}
+
+	rand.NewSource(time.Now().UnixNano())
+}
+
+var diffLevels = map[int]float64{0: 0.0, 1: 0.3, 2: 0.5, 3: 0.7}
+
+// difficulty determines how many gopher/hole
+// pairs should be used to fill in the current
+// board for the desired difficulty
+// levels:
+// 0 - empty
+// 1 - easy - 30% of space
+// 2 - medium - 50% of space
+// 3 - hard - 70% of space
+func difficulty(x, y, d int) int {
+	return int(math.Ceil((float64(x*y) * diffLevels[d]) / 2))
+}
+
 func emptyArea(xl, yl int, b Board) (int, int) {
 	// determine hole position and make sure it's
 	// empty, otherwise, look elsewhere. Not an
@@ -141,19 +153,12 @@ func canPlace(x, y, d int, b Board) bool {
 		return ok
 	}
 
-	switch d {
-	case 0:
-		return spaceOpen(x-1, y, &b)
-	case 1:
-		return spaceOpen(x, y+1, &b)
-	case 2:
-		return spaceOpen(x+1, y, &b)
-	case 3:
-		return spaceOpen(x, y-1, &b)
-	default:
-		return false
+	ok = directionOpen(x, y, d, b)
+	if !ok {
+		return ok
 	}
 
+	return ok
 }
 
 func withinBounds(xl, yl, x, y, d int) bool {
@@ -179,6 +184,21 @@ func withinBounds(xl, yl, x, y, d int) bool {
 	return true
 }
 
+func directionOpen(x, y, d int, b Board) bool {
+	switch d {
+	case 0:
+		return spaceOpen(x-1, y, &b)
+	case 1:
+		return spaceOpen(x, y+1, &b)
+	case 2:
+		return spaceOpen(x+1, y, &b)
+	case 3:
+		return spaceOpen(x, y-1, &b)
+	default:
+		return false
+	}
+}
+
 func spaceOpen(x, y int, bo *Board) bool {
 	b := *bo
 
@@ -193,15 +213,4 @@ func printBoard(b *Board) {
 	for _, r := range *b {
 		fmt.Println(r)
 	}
-}
-
-// setRand sets the intended seed otherwise uses
-// a time based seed
-func setRand(s int) {
-	if s > 0 {
-		rand.NewSource(int64(s))
-		return
-	}
-
-	rand.NewSource(time.Now().UnixNano())
 }
