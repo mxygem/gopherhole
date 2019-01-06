@@ -118,11 +118,13 @@ func TestCanPlaceUp_Boundaries(t *testing.T) {
 	}{
 		{
 			name: "Zeros, false",
-			xl:   0,
-			yl:   0,
-			x:    0,
-			y:    0,
-			d:    0,
+			xl:   0, yl: 0, x: 0, y: 0, d: 0,
+			ok: false,
+		},
+		{
+			name: "Within upper bounds",
+			xl:   0, yl: 0, x: 1, y: 0, d: 0,
+			ok: true,
 		},
 	}
 

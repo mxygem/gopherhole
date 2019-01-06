@@ -117,10 +117,10 @@ func fillBoard(d, s int, bo *Board) {
 }
 
 func canPlaceUp(xl, yl, x, y, d int) bool {
-	return inBounds(xl, yl, x, y, d)
+	return withinBounds(xl, yl, x, y, d)
 }
 
-func inBounds(xl, yl, x, y, d int) bool {
+func withinBounds(xl, yl, x, y, d int) bool {
 	switch d {
 	case 0: // up
 		if x == 0 {
