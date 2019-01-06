@@ -42,7 +42,7 @@ func TestDifficulty(t *testing.T) {
 		expected int
 	}{
 		{name: "10x10 Empty", x: 10, y: 10, d: 0, expected: 0},
-		{name: "10x10 Easy", x: 10, y: 10, d: 1, expected: 3},
+		{name: "10x10 Easy", x: 10, y: 10, d: 1, expected: 15},
 		// {name: "10x10 Medium", x: 10, y: 10, d: 2, expected: 0},
 		// {name: "10x10 Hard", x: 10, y: 10, d: 3, expected: 0},
 	}

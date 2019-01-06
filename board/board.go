@@ -1,5 +1,7 @@
 package board
 
+import "math"
+
 type Board [][]string
 
 // New returns a new board to the user based on
@@ -39,14 +41,11 @@ func fillBoard(d int, b *Board) {
 // pairs should be used to fill in the current board
 // levels:
 // 0 - empty
-// 1 - easy - 25% of space
-// 2 - medium - 50% of space
-// 3 - hard - 75% of space
+// 1 - easy - 30% of space
+// 2 - medium - 60% of space
+// 3 - hard - 80% of space
+var diffLevels = map[int]float64{0: 0.0, 1: 0.3, 2: 0.6, 3: 0.8}
+
 func difficulty(x, y, d int) int {
-	switch d {
-	case 1:
-		return 3
-	default:
-		return 0
-	}
+	return int(math.Ceil((float64(x*y) * diffLevels[d]) / 2))
 }
