@@ -98,10 +98,8 @@ func difficulty(x, y, d int) int {
 
 func findPositions(xl, yl int, b Board) positions {
 	x, y := emptyArea(xl, yl, b)
-	fmt.Printf("empty area at x: %d y: %d\n", x, y)
 
 	gx, gy := gopherArea(x, y, b)
-	fmt.Printf("gopher area at x: %d y: %d\n", x, y)
 	if gx == -1 {
 		return findPositions(xl, yl, b)
 	}
@@ -116,8 +114,8 @@ func emptyArea(xl, yl int, b Board) (int, int) {
 	var x, y int
 	empty := false
 	for empty == false {
-		x = rand.Intn(xl)
-		y = rand.Intn(yl)
+		x = r.Intn(xl)
+		y = r.Intn(yl)
 		empty = spaceOpen(x, y, &b)
 	}
 
@@ -184,7 +182,6 @@ func shuffleDirections() []int {
 }
 
 func canPlace(x, y int, b Board) bool {
-	fmt.Printf("canPlace x: %d, y: %d?\n", x, y)
 	xl := len(b)
 	yl := len(b[0])
 
@@ -202,15 +199,12 @@ func canPlace(x, y int, b Board) bool {
 }
 
 func spaceOpen(x, y int, bo *Board) bool {
-	fmt.Printf("checking for open space at %d,%d\n", x, y)
 	b := *bo
 
 	if b[x][y] == " " {
-		fmt.Println("open")
 		return true
 	}
 
-	fmt.Println("not open")
 	return false
 }
 
