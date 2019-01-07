@@ -151,35 +151,6 @@ func TestCanPlace_Boundaries(t *testing.T) {
 	}
 }
 
-func TestCanPlaceUp_SpaceOpen(t *testing.T) {
-	b := &Board{
-		[]string{" ", " ", "g", "o"},
-	}
-
-	testCases := []struct {
-		name string
-		x    int
-		y    int
-		ok   bool
-	}{
-		{
-			name: "Empty", x: 0, y: 0, ok: true,
-		},
-		{
-			name: "Not empty", x: 0, y: 2, ok: false,
-		},
-	}
-
-	for _, tc := range testCases {
-		t.Run(tc.name, func(tt *testing.T) {
-
-			ok := spaceOpen(tc.x, tc.y, b)
-
-			assert.Equal(tt, tc.ok, ok)
-		})
-	}
-}
-
 func TestGopherArea(t *testing.T) {
 	setRand(1)
 	testCases := []struct {

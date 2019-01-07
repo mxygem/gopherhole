@@ -116,7 +116,10 @@ func emptyArea(xl, yl int, b Board) (int, int) {
 	for empty == false {
 		x = r.Intn(xl)
 		y = r.Intn(yl)
-		empty = spaceOpen(x, y, &b)
+
+		if b[x][y] == " " {
+			empty = true
+		}
 	}
 
 	return x, y
@@ -137,10 +140,10 @@ func gopherArea(x, y int, b Board) (int, int) {
 
 	for _, i := range di {
 		pos := [][]int{
-			[]int{x - 1, y}, // up
-			[]int{x, y + 1}, // right
-			[]int{x, y + 1}, // down
-			[]int{x + 1, y}, // left
+			[]int{x - 1, y},
+			[]int{x, y + 1},
+			[]int{x, y + 1},
+			[]int{x + 1, y},
 		}
 
 		px := pos[i-1][0]
@@ -181,16 +184,6 @@ func canPlace(x, y int, b Board) bool {
 	}
 
 	return true
-}
-
-func spaceOpen(x, y int, bo *Board) bool {
-	b := *bo
-
-	if b[x][y] == " " {
-		return true
-	}
-
-	return false
 }
 
 func printBoard(b *Board) {
