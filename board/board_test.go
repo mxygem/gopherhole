@@ -175,28 +175,28 @@ func TestGopherArea(t *testing.T) {
 		gy   int
 		b    Board
 	}{
-		// {
-		// 	name: "No available spots",
-		// 	x:    0, y: 0, gx: -1, gy: -1,
-		// 	b: Board{
-		// 		[]string{" ", "o", "o", "o"},
-		// 	},
-		// },
-		// {
-		// 	name: "Can only place to the right",
-		// 	x:    0, y: 0, gx: 0, gy: 1,
-		// 	b: Board{
-		// 		[]string{" ", " ", "o", "o"},
-		// 	},
-		// },
-		// {
-		// 	name: "Can only place downward",
-		// 	x:    0, y: 0, gx: 1, gy: 0,
-		// 	b: Board{
-		// 		[]string{" ", "o", "o", "o"},
-		// 		[]string{" ", "o", "o", "o"},
-		// 	},
-		// },
+		{
+			name: "No available spots",
+			x:    0, y: 0, gx: -1, gy: -1,
+			b: Board{
+				[]string{" ", "o", "o", "o"},
+			},
+		},
+		{
+			name: "Can only place to the right",
+			x:    0, y: 0, gx: 0, gy: 1,
+			b: Board{
+				[]string{" ", " ", "o", "o"},
+			},
+		},
+		{
+			name: "Can only place downward",
+			x:    0, y: 0, gx: 1, gy: 0,
+			b: Board{
+				[]string{" ", "o", "o", "o"},
+				[]string{" ", "o", "o", "o"},
+			},
+		},
 		{
 			name: "Can only place upward",
 			x:    1, y: 1, gx: 0, gy: 1,

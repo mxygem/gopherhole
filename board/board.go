@@ -141,7 +141,7 @@ func gopherArea(x, y int, b Board) (int, int) {
 
 	for _, i := range di {
 		// check for open position in direction
-		switch i {
+		switch i - 1 {
 		case 0:
 			ok := canPlace(x-1, y, b)
 			if !ok {
@@ -183,11 +183,11 @@ func shuffleDirections() []int {
 		d[i], d[j] = d[j], d[i]
 	})
 
-	fmt.Println("shuffled to:", d)
 	return d
 }
 
 func canPlace(x, y int, b Board) bool {
+	fmt.Printf("canPlace x: %d, y: %d?\n", x, y)
 	xl := len(b)
 	yl := len(b[0])
 
@@ -198,7 +198,6 @@ func canPlace(x, y int, b Board) bool {
 
 	// check occupancy
 	if b[x][y] != " " {
-		fmt.Printf("b[%d][%d] = %s", x, y, b[x][y])
 		return false
 	}
 
