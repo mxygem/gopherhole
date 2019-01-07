@@ -136,36 +136,21 @@ func gopherArea(x, y int, b Board) (int, int) {
 	di := shuffleDirections()
 
 	for _, i := range di {
-		switch i - 1 {
-		case 0:
-			ok := canPlace(x-1, y, b)
-			if !ok {
-				continue
-			}
-
-			return x - 1, y
-		case 1:
-			ok := canPlace(x, y+1, b)
-			if !ok {
-				continue
-			}
-
-			return x, y + 1
-		case 2:
-			ok := canPlace(x+1, y, b)
-			if !ok {
-				continue
-			}
-
-			return x + 1, y
-		case 3:
-			ok := canPlace(x, y-1, b)
-			if !ok {
-				continue
-			}
-
-			return x, y - 1
+		pos := [][]int{
+			[]int{x - 1, y}, // up
+			[]int{x, y + 1}, // right
+			[]int{x, y + 1}, // down
+			[]int{x + 1, y}, // left
 		}
+
+		px := pos[i-1][0]
+		py := pos[i-1][1]
+		ok := canPlace(px, py, b)
+		if !ok {
+			continue
+		}
+
+		return px, py
 	}
 
 	return -1, -1
