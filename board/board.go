@@ -7,6 +7,8 @@ import (
 	"time"
 )
 
+var r *rand.Rand
+
 type Board [][]string
 
 type positions struct {
@@ -75,11 +77,11 @@ func fillBoard(d, s int, bo *Board) {
 // a time based seed
 func setRand(s int) {
 	if s > 0 {
-		rand.NewSource(int64(s))
+		r = rand.New(rand.NewSource(int64(s)))
 		return
 	}
 
-	rand.NewSource(time.Now().UnixNano())
+	r = rand.New(rand.NewSource(time.Now().UnixNano()))
 }
 
 var diffLevels = map[int]float64{0: 0.0, 1: 0.3, 2: 0.5, 3: 0.7}
@@ -138,11 +140,9 @@ func gopherArea(x, y int, b Board) (int, int) {
 	di := shuffleDirections()
 
 	for _, i := range di {
-		fmt.Println("direction:", i)
 		// check for open position in direction
 		switch i {
 		case 0:
-			fmt.Printf("gopher up from x: %d y: %d\n", x, y)
 			ok := canPlace(x-1, y, b)
 			if !ok {
 				continue
@@ -150,7 +150,6 @@ func gopherArea(x, y int, b Board) (int, int) {
 
 			return x - 1, y
 		case 1:
-			fmt.Printf("gopher right from x: %d y: %d\n", x, y)
 			ok := canPlace(x, y+1, b)
 			if !ok {
 				continue
@@ -158,7 +157,6 @@ func gopherArea(x, y int, b Board) (int, int) {
 
 			return x, y + 1
 		case 2:
-			fmt.Printf("gopher down from x: %d y: %d\n", x, y)
 			ok := canPlace(x+1, y, b)
 			if !ok {
 				continue
@@ -166,7 +164,6 @@ func gopherArea(x, y int, b Board) (int, int) {
 
 			return x + 1, y
 		case 3:
-			fmt.Printf("gopher left from x: %d y: %d\n", x, y)
 			ok := canPlace(x, y-1, b)
 			if !ok {
 				continue
@@ -182,7 +179,7 @@ func gopherArea(x, y int, b Board) (int, int) {
 func shuffleDirections() []int {
 	d := []int{1, 2, 3, 4}
 
-	rand.Shuffle(len(d), func(i, j int) {
+	r.Shuffle(len(d), func(i, j int) {
 		d[i], d[j] = d[j], d[i]
 	})
 
@@ -201,7 +198,7 @@ func canPlace(x, y int, b Board) bool {
 
 	// check occupancy
 	if b[x][y] != " " {
-		fmt.Println("b[x][y] = ", b[x][y])
+		fmt.Printf("b[%d][%d] = %s", x, y, b[x][y])
 		return false
 	}
 
