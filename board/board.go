@@ -68,8 +68,6 @@ func fillBoard(d, s int, bo *Board) {
 		b[pos.x][pos.y] = "o"
 		// place gopher
 		b[pos.gx][pos.gy] = "g"
-
-		printBoard(&b)
 	}
 }
 
@@ -140,7 +138,6 @@ func gopherArea(x, y int, b Board) (int, int) {
 	di := shuffleDirections()
 
 	for _, i := range di {
-		// check for open position in direction
 		switch i - 1 {
 		case 0:
 			ok := canPlace(x-1, y, b)

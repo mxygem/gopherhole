@@ -67,28 +67,46 @@ func TestFillBoard(t *testing.T) {
 		d    int
 		b    *Board
 	}{
-		// {
-		// 	name: "Empty",
-		// 	d:    0,
-		// 	b: &Board{
-		// 		[]string{" ", " ", " ", " "},
-		// 		[]string{" ", " ", " ", " "},
-		// 		[]string{" ", " ", " ", " "},
-		// 		[]string{" ", " ", " ", " "},
-		// 	},
-		// },
+		{
+			name: "Empty",
+			d:    0,
+			b: &Board{
+				[]string{" ", " ", " ", " "},
+				[]string{" ", " ", " ", " "},
+				[]string{" ", " ", " ", " "},
+				[]string{" ", " ", " ", " "},
+			},
+		},
 		{
 			name: "Easy",
 			d:    1,
 			b: &Board{
-				[]string{" ", " ", " ", " "},
+				[]string{" ", " ", " ", "g"},
 				[]string{" ", " ", "o", "o"},
-				[]string{" ", " ", " ", " "},
+				[]string{" ", " ", "g", "g"},
 				[]string{" ", " ", " ", "o"},
 			},
 		},
-		// {name: "Medium", d: 2},
-		// {name: "Hard", d: 3},
+		{
+			name: "Medium",
+			d:    2,
+			b: &Board{
+				[]string{"g", " ", "o", " "},
+				[]string{"o", " ", "g", "g"},
+				[]string{" ", "o", "g", "o"},
+				[]string{" ", " ", " ", " "},
+			},
+		},
+		{
+			name: "Hard",
+			d:    3,
+			b: &Board{
+				[]string{"g", " ", "g", " "},
+				[]string{"o", " ", "o", " "},
+				[]string{"g", "g", "g", "o"},
+				[]string{"o", "o", "o", "g"},
+			},
+		},
 	}
 
 	for _, tc := range testCases {
