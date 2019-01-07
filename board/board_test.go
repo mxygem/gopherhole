@@ -98,16 +98,6 @@ func TestFillBoard(t *testing.T) {
 				[]string{" ", " ", " ", " "},
 			},
 		},
-		{
-			name: "Hard",
-			d:    3,
-			b: &Board{
-				[]string{" ", "o", "o", "g"},
-				[]string{"g", "g", " ", "o"},
-				[]string{"o", "o", "g", "g"},
-				[]string{"o", "g", " ", " "},
-			},
-		},
 	}
 
 	for _, tc := range testCases {

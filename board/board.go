@@ -82,16 +82,15 @@ func setRand(s int) {
 	r = rand.New(rand.NewSource(time.Now().UnixNano()))
 }
 
-var diffLevels = map[int]float64{0: 0.0, 1: 0.3, 2: 0.5, 3: 0.7}
+var diffLevels = map[int]float64{0: 0.0, 1: 0.3, 2: 0.5}
 
 // difficulty determines how many gopher/hole
 // pairs should be used to fill in the current
 // board for the desired difficulty
 // levels:
 // 0 - empty
-// 1 - easy - 30% of space
-// 2 - medium - 50% of space
-// 3 - hard - 70% of space
+// 1 - low - up to 30% of space
+// 2 - high - up to 50% of space
 func difficulty(x, y, d int) int {
 	return int(math.Ceil((float64(x*y) * diffLevels[d]) / 2))
 }
