@@ -61,7 +61,7 @@ func fillBoard(d, s int, bo *Board) {
 
 	// find spots for all the desired gopher/hole pairs
 	for i := 0; i < dc; i++ {
-		pos := findPositions(xl, yl, d, b)
+		pos := findPositions(xl, yl, b)
 		// place hole
 		b[pos.x][pos.y] = "o"
 		// place gopher
@@ -96,14 +96,14 @@ func difficulty(x, y, d int) int {
 	return int(math.Ceil((float64(x*y) * diffLevels[d]) / 2))
 }
 
-func findPositions(xl, yl, d int, b Board) positions {
+func findPositions(xl, yl int, b Board) positions {
 	x, y := emptyArea(xl, yl, b)
 	fmt.Printf("empty area at x: %d y: %d\n", x, y)
 
-	gx, gy := gopherArea(x, y, d, b)
+	gx, gy := gopherArea(x, y, b)
 	fmt.Printf("gopher area at x: %d y: %d\n", x, y)
 	if gx == -1 {
-		return findPositions(xl, yl, d, b)
+		return findPositions(xl, yl, b)
 	}
 
 	return positions{x: x, y: y, gx: gx, gy: gy}
@@ -127,7 +127,7 @@ func emptyArea(xl, yl int, b Board) (int, int) {
 // Similar to emptyArea, except it checks for in
 // bounds before checking for empty.
 // Returns -1, -1 if no suitable space was found
-func gopherArea(x, y, d int, b Board) (int, int) {
+func gopherArea(x, y int, b Board) (int, int) {
 	var gopherEmpty bool
 	gx := x
 	gy := y
@@ -141,6 +141,7 @@ func gopherArea(x, y, d int, b Board) (int, int) {
 		// 1 = right
 		// 2 = down
 		// 3 = left
+
 		di := rand.Intn(4)
 		fmt.Println(di)
 
@@ -148,36 +149,36 @@ func gopherArea(x, y, d int, b Board) (int, int) {
 		switch di {
 		case 0:
 			fmt.Printf("gopher up from x: %d y: %d\n", x, y)
-			ok := canPlace(x, y, d, b)
+			ok := canPlace(x-1, y, b)
 			if !ok {
-				return gopherArea(x, y, d, b)
+				return gopherArea(x, y, b)
 			}
 
 			gx--
 			gopherEmpty = true
 		case 1:
 			fmt.Printf("gopher right from x: %d y: %d\n", x, y)
-			ok := canPlace(x, y, d, b)
+			ok := canPlace(x, y+1, b)
 			if !ok {
-				return gopherArea(x, y, d, b)
+				return gopherArea(x, y, b)
 			}
 
 			gy++
 			gopherEmpty = true
 		case 2:
 			fmt.Printf("gopher down from x: %d y: %d\n", x, y)
-			ok := canPlace(x, y, d, b)
+			ok := canPlace(x+1, y, b)
 			if !ok {
-				return gopherArea(x, y, d, b)
+				return gopherArea(x, y, b)
 			}
 
 			gx++
 			gopherEmpty = true
 		case 3:
 			fmt.Printf("gopher left from x: %d y: %d\n", x, y)
-			ok := canPlace(x, y, d, b)
+			ok := canPlace(x, y-1, b)
 			if !ok {
-				return gopherArea(x, y, d, b)
+				return gopherArea(x, y, b)
 			}
 
 			gy--
@@ -188,61 +189,22 @@ func gopherArea(x, y, d int, b Board) (int, int) {
 	return gx, gy
 }
 
-func canPlace(x, y, d int, b Board) bool {
+func canPlace(x, y int, b Board) bool {
 	xl := len(b)
 	yl := len(b[0])
 
-	ok := withinBounds(xl, yl, x, y, d)
-	if !ok {
-		fmt.Println("not within bounds")
-		return ok
+	// check within bounds
+	if x < 0 || x >= xl || y < 0 || y >= yl {
+		return false
 	}
 
-	ok = directionOpen(x, y, d, b)
-	if !ok {
-		fmt.Println("direction not open")
-		return ok
-	}
-
-	return ok
-}
-
-func withinBounds(xl, yl, x, y, d int) bool {
-	switch d {
-	case 0: // up
-		if x == 0 {
-			return false
-		}
-	case 1: // right
-		if y >= (yl - 1) {
-			return false
-		}
-	case 2: // lower
-		if x <= (xl - 1) {
-			return false
-		}
-	case 3: // left
-		if y == 0 {
-			return false
-		}
+	// check occupancy
+	if b[x][y] != " " {
+		fmt.Println("b[x][y] = ", b[x][y])
+		return false
 	}
 
 	return true
-}
-
-func directionOpen(x, y, d int, b Board) bool {
-	switch d {
-	case 0:
-		return spaceOpen(x-1, y, &b)
-	case 1:
-		return spaceOpen(x, y+1, &b)
-	case 2:
-		return spaceOpen(x+1, y, &b)
-	case 3:
-		return spaceOpen(x, y-1, &b)
-	default:
-		return false
-	}
 }
 
 func spaceOpen(x, y int, bo *Board) bool {

@@ -107,62 +107,29 @@ func TestFillBoard(t *testing.T) {
 	}
 }
 
-func TestCanPlace_WithinBounds(t *testing.T) {
+func TestCanPlace_Boundaries(t *testing.T) {
 	testCases := []struct {
 		name string
 		bd   int
 		x    int
 		y    int
-		d    int
 		ok   bool
 	}{
-		{
-			name: "Outside upper bounds 4x4/Zeros",
-			bd:   0, x: 0, y: 0, d: 0,
-			ok: false,
-		},
-		{
-			name: "Inside upper bounds 4x4",
-			bd:   4, x: 1, y: 0, d: 0,
-			ok: true,
-		},
-		{
-			name: "Out of right bounds 4x4",
-			bd:   4, x: 0, y: 3, d: 1,
-			ok: false,
-		},
-		{
-			name: "Inside right bounds 4x4",
-			bd:   4, x: 0, y: 0, d: 1,
-			ok: true,
-		},
-		{
-			name: "Out of lower bounds 4x4",
-			bd:   4, x: 3, y: 0, d: 2,
-			ok: false,
-		},
-		{
-			name: "Inside lower bounds 4x4",
-			bd:   4, x: 0, y: 0, d: 2,
-			ok: false,
-		},
-		{
-			name: "Out of left bounds 4x4",
-			bd:   4, x: 0, y: 0, d: 3,
-			ok: false,
-		},
-		{
-			name: "Inside left bounds 4x4",
-			bd:   4, x: 0, y: 1, d: 3,
-			ok: true,
-		},
+		{name: "Out of upper bounds", bd: 0, x: -1, y: 0, ok: false},
+		{name: "Out of right bounds", bd: 4, x: 0, y: 4, ok: false},
+		{name: "Out of lower bounds", bd: 4, x: 4, y: 0, ok: false},
+		{name: "Out of left bounds", bd: 4, x: 0, y: -1, ok: false},
+		{name: "Inside upper bounds", bd: 4, x: 1, y: 0, ok: true},
+		{name: "Inside right bounds", bd: 4, x: 0, y: 0, ok: true},
+		{name: "Inside lower bounds", bd: 4, x: 3, y: 0, ok: true},
+		{name: "Inside left bounds", bd: 4, x: 0, y: 1, ok: true},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(tt *testing.T) {
 			b := New(tc.bd, tc.bd)
 
-			ok := canPlace(tc.x, tc.y, tc.d, b)
+			ok := canPlace(tc.x, tc.y, b)
 
 			assert.Equal(tt, tc.ok, ok)
 		})
@@ -194,6 +161,54 @@ func TestCanPlaceUp_SpaceOpen(t *testing.T) {
 			ok := spaceOpen(tc.x, tc.y, b)
 
 			assert.Equal(tt, tc.ok, ok)
+		})
+	}
+}
+
+func TestGopherArea(t *testing.T) {
+	setRand(1)
+	testCases := []struct {
+		name string
+		x    int
+		y    int
+		gx   int
+		gy   int
+		b    Board
+	}{
+		{
+			name: "No available spots",
+			x:    0, y: 0, gx: -1, gy: -1,
+			b: Board{[]string{" ", "o", "o", "o"}},
+		},
+		// {
+		// 	name: "Can only place to the right",
+		// 	x:    0, y: 0, gx: 0, gy: 1,
+		// 	b: Board{[]string{" ", " ", "o", "o"}},
+		// },
+		// {
+		// 	name: "Can only place downward",
+		// 	x:    0, y: 0, gx: 1, gy: 0,
+		// 	b: Board{
+		// 		[]string{" ", "o", "o", "o"},
+		// 		[]string{" ", "o", "o", "o"},
+		// 	},
+		// },
+		// {
+		// 	name: "Can only place upward",
+		// 	x:    1, y: 2, gx: 0, gy: 2,
+		// 	b: Board{
+		// 		[]string{"o", " ", "o", "o"},
+		// 		[]string{"o", " ", "o", "o"},
+		// 	},
+		// },
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(tt *testing.T) {
+			x, y := gopherArea(tc.x, tc.y, tc.b)
+
+			assert.Equal(tt, tc.gx, x)
+			assert.Equal(tt, tc.gy, y)
 		})
 	}
 }
