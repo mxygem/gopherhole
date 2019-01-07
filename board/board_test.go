@@ -207,6 +207,8 @@ func TestGopherArea(t *testing.T) {
 		t.Run(tc.name, func(tt *testing.T) {
 			x, y := gopherArea(tc.x, tc.y, tc.b)
 
+			fmt.Println("x: ", x)
+			fmt.Println("y: ", y)
 			assert.Equal(tt, tc.gx, x)
 			assert.Equal(tt, tc.gy, y)
 		})

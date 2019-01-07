@@ -128,65 +128,66 @@ func emptyArea(xl, yl int, b Board) (int, int) {
 // bounds before checking for empty.
 // Returns -1, -1 if no suitable space was found
 func gopherArea(x, y int, b Board) (int, int) {
-	var gopherEmpty bool
-	gx := x
-	gy := y
+	// determine gopher position
+	// position is "random" while taking into
+	// account the edge of the board
+	// 0 = up
+	// 1 = right
+	// 2 = down
+	// 3 = left
+	di := shuffleDirections()
 
-	for gopherEmpty == false {
-		fmt.Println("gopherEmpty:", gopherEmpty)
-		// determine gopher position
-		// position is "random" while taking into
-		// account the edge of the board
-		// 0 = up
-		// 1 = right
-		// 2 = down
-		// 3 = left
-
-		di := rand.Intn(4)
-		fmt.Println(di)
-
+	for _, i := range di {
+		fmt.Println("direction:", i)
 		// check for open position in direction
-		switch di {
+		switch i {
 		case 0:
 			fmt.Printf("gopher up from x: %d y: %d\n", x, y)
 			ok := canPlace(x-1, y, b)
 			if !ok {
-				return gopherArea(x, y, b)
+				continue
 			}
 
-			gx--
-			gopherEmpty = true
+			return x - 1, y
 		case 1:
 			fmt.Printf("gopher right from x: %d y: %d\n", x, y)
 			ok := canPlace(x, y+1, b)
 			if !ok {
-				return gopherArea(x, y, b)
+				continue
 			}
 
-			gy++
-			gopherEmpty = true
+			return x, y + 1
 		case 2:
 			fmt.Printf("gopher down from x: %d y: %d\n", x, y)
 			ok := canPlace(x+1, y, b)
 			if !ok {
-				return gopherArea(x, y, b)
+				continue
 			}
 
-			gx++
-			gopherEmpty = true
+			return x + 1, y
 		case 3:
 			fmt.Printf("gopher left from x: %d y: %d\n", x, y)
 			ok := canPlace(x, y-1, b)
 			if !ok {
-				return gopherArea(x, y, b)
+				continue
 			}
 
-			gy--
-			gopherEmpty = true
+			return x, y - 1
 		}
 	}
 
-	return gx, gy
+	return -1, -1
+}
+
+func shuffleDirections() []int {
+	d := []int{1, 2, 3, 4}
+
+	rand.Shuffle(len(d), func(i, j int) {
+		d[i], d[j] = d[j], d[i]
+	})
+
+	fmt.Println("shuffled to:", d)
+	return d
 }
 
 func canPlace(x, y int, b Board) bool {
