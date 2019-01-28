@@ -181,16 +181,24 @@ func shuffleDirections() []int {
 }
 
 func canPlace(x, y int, b Board) bool {
-	xl := len(b)
-	yl := len(b[0])
-
-	// check within bounds
-	if x < 0 || x >= xl || y < 0 || y >= yl {
+	if inBounds := withinBounds(x, y, b); !inBounds {
 		return false
 	}
 
 	// check occupancy
 	if b[x][y] != " " {
+		return false
+	}
+
+	return true
+}
+
+func withinBounds(x, y int, b Board) bool {
+	xl := len(b)
+	yl := len(b[0])
+
+	// check within bounds
+	if x < 0 || x >= xl || y < 0 || y >= yl {
 		return false
 	}
 
