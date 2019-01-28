@@ -65,9 +65,10 @@ func fillBoard(d, s int, bo *Board) {
 	for i := 0; i < dc; i++ {
 		pos := findPositions(xl, yl, b)
 		// place gopher
-		b[pos.hx][pos.hy] = "g"
-		// place hole
-		b[pos.gx][pos.gy] = "o"
+		fmt.Printf("gopher @ %d, %d\n", pos.gx, pos.gy)
+		b[pos.gx][pos.gy] = "g"
+		fmt.Printf("hole @ %d, %d\n", pos.hx, pos.hy)
+		b[pos.hx][pos.hy] = "o"
 	}
 }
 
@@ -107,10 +108,10 @@ func findPositions(xl, yl int, b Board) positions {
 }
 
 func gopherArea(xl, yl int, b Board) (int, int) {
-	// pick a hole position and then make sure
+	// pick a gopher position and then make sure
 	// it's empty AND its surrounding 8 squares
-	// doesn't already contain yeah a gopher
-	// otherwise, look elsewhere.
+	// don't already contain a gopher otherwise,
+	// look elsewhere.
 	// Not an optimal solution.
 	var x, y int
 	empty := false
@@ -118,7 +119,7 @@ func gopherArea(xl, yl int, b Board) (int, int) {
 		x = r.Intn(xl)
 		y = r.Intn(yl)
 
-		if b[x][y] == " " {
+		if b[x][y] == " " && !surroundingGopher(x, y, b) {
 			empty = true
 		}
 	}
@@ -206,7 +207,7 @@ func canPlace(x, y int, b Board) bool {
 	}
 
 	// check occupancy
-	if b[x][y] != " " {
+	if b[x][y] != " " && b[x][y] != "o" && b[x][y] != "g" {
 		return false
 	}
 
