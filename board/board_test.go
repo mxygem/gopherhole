@@ -199,7 +199,7 @@ func TestSurroundingGopher(t *testing.T) {
 		expected bool
 	}{
 		{
-			name: "Empty, in middle of board",
+			name: "Middle of board, all empty",
 			x:    1,
 			y:    1,
 			b: Board{
@@ -208,6 +208,17 @@ func TestSurroundingGopher(t *testing.T) {
 				[]string{" ", " ", " "},
 			},
 			expected: true,
+		},
+		{
+			name: "Middle of board, one found above",
+			x:    1,
+			y:    1,
+			b: Board{
+				[]string{" ", "g", " "},
+				[]string{" ", " ", " "},
+				[]string{" ", " ", " "},
+			},
+			expected: false,
 		},
 	}
 

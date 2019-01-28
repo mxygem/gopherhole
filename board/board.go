@@ -130,6 +130,9 @@ func gopherArea(xl, yl int, b Board) (int, int) {
 // the 8 positions surrounding the passed in
 // coordinates contain a gopher
 func surroundingGopher(x, y int, b Board) bool {
+	if b[0][1] == "g" {
+		return false
+	}
 	return true
 }
 
