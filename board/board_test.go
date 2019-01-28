@@ -101,9 +101,9 @@ func TestFillBoard(t *testing.T) {
 			setRand(1)
 			b := New(4, 4)
 
-			fillBoard(tc.d, 1, &b)
+			b.fillBoard(tc.d, 1)
 
-			printBoard(&b)
+			b.print()
 			assert.Equal(tt, tc.b, &b)
 		})
 	}
@@ -131,9 +131,70 @@ func TestCanPlace_Boundaries(t *testing.T) {
 		t.Run(tc.name, func(tt *testing.T) {
 			b := New(tc.bd, tc.bd)
 
-			ok := canPlace(tc.x, tc.y, b)
+			ok := b.canPlace(tc.x, tc.y)
 
 			assert.Equal(tt, tc.ok, ok)
+		})
+	}
+}
+
+func TestGopherArea(t *testing.T) {
+	testCases := []struct {
+		name string
+		b    Board
+		x    int
+		y    int
+	}{
+		{
+			name: "Empty Board",
+			b: Board{
+				[]string{" ", " ", " ", " "},
+				[]string{" ", " ", " ", " "},
+				[]string{" ", " ", " ", " "},
+				[]string{" ", " ", " ", " "},
+			},
+			x: 1, y: 3,
+		},
+		{
+			name: "Force placement elsewhere via gopher at initial position",
+			b: Board{
+				[]string{" ", " ", " ", " "},
+				[]string{" ", " ", " ", "g"},
+				[]string{" ", " ", " ", " "},
+				[]string{" ", " ", " ", " "},
+			},
+			x: 3, y: 3,
+		},
+		{
+			name: "Force placement elsewhere via hole at initial position",
+			b: Board{
+				[]string{" ", " ", " ", " "},
+				[]string{" ", " ", " ", "o"},
+				[]string{" ", " ", " ", " "},
+				[]string{" ", " ", " ", " "},
+			},
+			x: 3, y: 3,
+		},
+		{
+			name: "Check third position",
+			b: Board{
+				[]string{" ", " ", " ", " "},
+				[]string{" ", " ", " ", "g"},
+				[]string{" ", " ", " ", "o"},
+				[]string{" ", " ", "o", "g"},
+			},
+			x: 1, y: 0,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(tt *testing.T) {
+			setRand(1)
+
+			x, y := tc.b.gopherArea()
+
+			assert.Equal(tt, tc.x, x)
+			assert.Equal(tt, tc.y, y)
 		})
 	}
 }
@@ -182,7 +243,7 @@ func TestHoleArea(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(tt *testing.T) {
-			x, y := holeArea(tc.x, tc.y, tc.b)
+			x, y := tc.b.holeArea(tc.x, tc.y)
 
 			assert.Equal(tt, tc.hx, x)
 			assert.Equal(tt, tc.hy, y)
@@ -301,7 +362,7 @@ func TestSurroundingGopher(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(tt *testing.T) {
-			actual := surroundingGopher(tc.x, tc.y, tc.b)
+			actual := tc.b.surroundingGopher(tc.x, tc.y)
 
 			assert.Equal(tt, tc.expected, actual)
 		})

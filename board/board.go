@@ -49,24 +49,22 @@ func defaultDim(i int) int {
 // the desired number of gopher/hole pairs. It
 // also allows for a seed to be specified for
 // deterministic generation
-func fillBoard(d, s int, bo *Board) {
-	b := *bo
+func (b Board) fillBoard(d, s int) {
 	// empty difficulty
 	if d == 0 {
 		return
 	}
 
 	setRand(s)
-	xl := len(b)
-	yl := len(b[0])
-	dc := difficulty(xl, yl, d)
+	dc := difficulty(len(b), len(b[0]), d)
 
 	// find spots for all the desired gopher/hole pairs
 	for i := 0; i < dc; i++ {
-		pos := findPositions(xl, yl, b)
-		// place gopher
+		pos := b.findPositions()
+
 		fmt.Printf("gopher @ %d, %d\n", pos.gx, pos.gy)
 		b[pos.gx][pos.gy] = "g"
+
 		fmt.Printf("hole @ %d, %d\n", pos.hx, pos.hy)
 		b[pos.hx][pos.hy] = "o"
 	}
@@ -96,31 +94,37 @@ func difficulty(x, y, d int) int {
 	return int(math.Ceil((float64(x*y) * diffLevels[d]) / 2))
 }
 
-func findPositions(xl, yl int, b Board) positions {
-	hx, hy := gopherArea(xl, yl, b)
+func (b Board) findPositions() positions {
+	hx, hy := b.gopherArea()
+	fmt.Printf("gopher position: %d, %d\n", hx, hy)
 
-	gx, gy := holeArea(hx, hy, b)
+	gx, gy := b.holeArea(hx, hy)
+	fmt.Printf("hole position: %d, %d\n", gx, gy)
 	if gx == -1 {
-		return findPositions(xl, yl, b)
+		return b.findPositions()
 	}
 
 	return positions{hx: hx, hy: hy, gx: gx, gy: gy}
 }
 
-func gopherArea(xl, yl int, b Board) (int, int) {
+func (b Board) gopherArea() (int, int) {
 	// pick a gopher position and then make sure
 	// it's empty AND its surrounding 8 squares
 	// don't already contain a gopher otherwise,
 	// look elsewhere.
 	// Not an optimal solution.
 	var x, y int
-	empty := false
-	for empty == false {
+	var usable bool
+
+	xl := len(b)
+	yl := len(b[0])
+
+	for usable == false {
 		x = r.Intn(xl)
 		y = r.Intn(yl)
 
-		if b[x][y] == " " && !surroundingGopher(x, y, b) {
-			empty = true
+		if b[x][y] == " " && !b.surroundingGopher(x, y) {
+			usable = true
 		}
 	}
 
@@ -130,7 +134,7 @@ func gopherArea(xl, yl int, b Board) (int, int) {
 // surroundingGopher checks for whether or not
 // the 8 positions surrounding the passed in
 // coordinates contain a gopher
-func surroundingGopher(x, y int, b Board) bool {
+func (b Board) surroundingGopher(x, y int) bool {
 	pos := [][]int{
 		// top row
 		[]int{-1, -1},
@@ -149,7 +153,7 @@ func surroundingGopher(x, y int, b Board) bool {
 		nx := p[0] + x
 		ny := p[1] + y
 
-		if withinBounds(nx, ny, b) && b[nx][ny] == "g" {
+		if b.withinBounds(nx, ny) && b[nx][ny] == "g" {
 			return true
 		}
 	}
@@ -160,7 +164,7 @@ func surroundingGopher(x, y int, b Board) bool {
 // Similar to gopherArea, except it checks for in
 // bounds before checking for empty.
 // Returns -1, -1 if no suitable space was found
-func holeArea(x, y int, b Board) (int, int) {
+func (b Board) holeArea(x, y int) (int, int) {
 	// determine gopher position
 	// position is "random" while taking into
 	// account the edge of the board
@@ -180,7 +184,7 @@ func holeArea(x, y int, b Board) (int, int) {
 
 		px := pos[i-1][0]
 		py := pos[i-1][1]
-		ok := canPlace(px, py, b)
+		ok := b.canPlace(px, py)
 		if !ok {
 			continue
 		}
@@ -201,8 +205,8 @@ func shuffleDirections() []int {
 	return d
 }
 
-func canPlace(x, y int, b Board) bool {
-	if inBounds := withinBounds(x, y, b); !inBounds {
+func (b Board) canPlace(x, y int) bool {
+	if inBounds := b.withinBounds(x, y); !inBounds {
 		return false
 	}
 
@@ -214,7 +218,7 @@ func canPlace(x, y int, b Board) bool {
 	return true
 }
 
-func withinBounds(x, y int, b Board) bool {
+func (b Board) withinBounds(x, y int) bool {
 	xl := len(b)
 	yl := len(b[0])
 
@@ -226,8 +230,8 @@ func withinBounds(x, y int, b Board) bool {
 	return true
 }
 
-func printBoard(b *Board) {
-	for _, r := range *b {
+func (b Board) print() {
+	for _, r := range b {
 		fmt.Println(r)
 	}
 }
