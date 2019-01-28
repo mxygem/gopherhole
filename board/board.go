@@ -130,10 +130,30 @@ func gopherArea(xl, yl int, b Board) (int, int) {
 // the 8 positions surrounding the passed in
 // coordinates contain a gopher
 func surroundingGopher(x, y int, b Board) bool {
-	if b[0][1] == "g" {
-		return false
+	pos := [][]int{
+		// top row
+		[]int{-1, -1},
+		[]int{0, -1},
+		[]int{+1, -1},
+		// middle row
+		[]int{-1, 0},
+		[]int{+1, 0},
+		// bottom row
+		[]int{-1, +1},
+		[]int{0, +1},
+		[]int{+1, +1},
 	}
-	return true
+
+	for _, p := range pos {
+		nx := p[0] + x
+		ny := p[1] + y
+
+		if withinBounds(nx, ny, b) && b[nx][ny] == "g" {
+			return true
+		}
+	}
+
+	return false
 }
 
 // Similar to gopherArea, except it checks for in

@@ -207,7 +207,7 @@ func TestSurroundingGopher(t *testing.T) {
 				[]string{" ", " ", " "},
 				[]string{" ", " ", " "},
 			},
-			expected: true,
+			expected: false,
 		},
 		{
 			name: "Middle of board, one found above",
@@ -218,6 +218,72 @@ func TestSurroundingGopher(t *testing.T) {
 				[]string{" ", " ", " "},
 				[]string{" ", " ", " "},
 			},
+			expected: true,
+		},
+		{
+			name: "Left edge of board, empty",
+			x:    0,
+			y:    1,
+			b: Board{
+				[]string{" ", " ", " "},
+				[]string{" ", " ", " "},
+				[]string{" ", " ", " "},
+			},
+			expected: false,
+		},
+		{
+			name: "Left edge of board, gopher below",
+			x:    0,
+			y:    1,
+			b: Board{
+				[]string{" ", " ", " "},
+				[]string{" ", " ", " "},
+				[]string{"g", " ", " "},
+			},
+			expected: false,
+		},
+		{
+			name: "Bottom-right corner of board, empty",
+			x:    2,
+			y:    2,
+			b: Board{
+				[]string{" ", " ", " "},
+				[]string{" ", " ", " "},
+				[]string{" ", " ", " "},
+			},
+			expected: false,
+		},
+		{
+			name: "Top-right corner of board, two found",
+			x:    0,
+			y:    2,
+			b: Board{
+				[]string{" ", "g", " "},
+				[]string{" ", " ", "g"},
+				[]string{" ", " ", " "},
+			},
+			expected: true,
+		},
+		{
+			name: "Lower-left corner of board, one at diagonal",
+			x:    2,
+			y:    0,
+			b: Board{
+				[]string{" ", " ", " "},
+				[]string{" ", "g", " "},
+				[]string{" ", " ", " "},
+			},
+			expected: true,
+		},
+		{
+			name: "Lower-left corner of board, one out of range",
+			x:    2,
+			y:    0,
+			b: Board{
+				[]string{" ", " ", "g"},
+				[]string{" ", " ", " "},
+				[]string{" ", " ", " "},
+			},
 			expected: false,
 		},
 	}
@@ -225,6 +291,7 @@ func TestSurroundingGopher(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(tt *testing.T) {
 			actual := surroundingGopher(tc.x, tc.y, tc.b)
+
 			assert.Equal(tt, tc.expected, actual)
 		})
 	}
