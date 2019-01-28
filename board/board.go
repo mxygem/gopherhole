@@ -12,10 +12,10 @@ var r *rand.Rand
 type Board [][]string
 
 type positions struct {
-	x  int
-	y  int
 	gx int
 	gy int
+	hx int
+	hy int
 }
 
 // New returns a new board to the user based on
@@ -46,8 +46,8 @@ func defaultDim(i int) int {
 }
 
 // fillBoard pseudorandomly fills the board with
-// the desired number of gopher/hole pairs it
-// Also allows for a seed to be specified for
+// the desired number of gopher/hole pairs. It
+// also allows for a seed to be specified for
 // deterministic generation
 func fillBoard(d, s int, bo *Board) {
 	b := *bo
@@ -64,10 +64,10 @@ func fillBoard(d, s int, bo *Board) {
 	// find spots for all the desired gopher/hole pairs
 	for i := 0; i < dc; i++ {
 		pos := findPositions(xl, yl, b)
-		// place hole
-		b[pos.x][pos.y] = "o"
 		// place gopher
-		b[pos.gx][pos.gy] = "g"
+		b[pos.hx][pos.hy] = "g"
+		// place hole
+		b[pos.gx][pos.gy] = "o"
 	}
 }
 
@@ -96,20 +96,22 @@ func difficulty(x, y, d int) int {
 }
 
 func findPositions(xl, yl int, b Board) positions {
-	x, y := emptyArea(xl, yl, b)
+	hx, hy := gopherArea(xl, yl, b)
 
-	gx, gy := gopherArea(x, y, b)
+	gx, gy := holeArea(hx, hy, b)
 	if gx == -1 {
 		return findPositions(xl, yl, b)
 	}
 
-	return positions{x: x, y: y, gx: gx, gy: gy}
+	return positions{hx: hx, hy: hy, gx: gx, gy: gy}
 }
 
-func emptyArea(xl, yl int, b Board) (int, int) {
-	// determine hole position and make sure it's
-	// empty, otherwise, look elsewhere. Not an
-	// optimal solution.
+func gopherArea(xl, yl int, b Board) (int, int) {
+	// pick a hole position and then make sure
+	// it's empty AND its surrounding 8 squares
+	// doesn't already contain yeah a gopher
+	// otherwise, look elsewhere.
+	// Not an optimal solution.
 	var x, y int
 	empty := false
 	for empty == false {
@@ -124,10 +126,17 @@ func emptyArea(xl, yl int, b Board) (int, int) {
 	return x, y
 }
 
-// Similar to emptyArea, except it checks for in
+// surroundingGopher checks for whether or not
+// the 8 positions surrounding the passed in
+// coordinates contain a gopher
+func surroundingGopher(x, y int, b Board) bool {
+	return true
+}
+
+// Similar to gopherArea, except it checks for in
 // bounds before checking for empty.
 // Returns -1, -1 if no suitable space was found
-func gopherArea(x, y int, b Board) (int, int) {
+func holeArea(x, y int, b Board) (int, int) {
 	// determine gopher position
 	// position is "random" while taking into
 	// account the edge of the board

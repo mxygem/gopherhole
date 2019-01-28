@@ -1,7 +1,6 @@
 package board
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -139,33 +138,33 @@ func TestCanPlace_Boundaries(t *testing.T) {
 	}
 }
 
-func TestGopherArea(t *testing.T) {
+func TestHoleArea(t *testing.T) {
 	setRand(1)
 	testCases := []struct {
 		name string
 		x    int
 		y    int
-		gx   int
-		gy   int
+		hx   int
+		hy   int
 		b    Board
 	}{
 		{
 			name: "No available spots",
-			x:    0, y: 0, gx: -1, gy: -1,
+			x:    0, y: 0, hx: -1, hy: -1,
 			b: Board{
 				[]string{" ", "o", "o", "o"},
 			},
 		},
 		{
 			name: "Can only place to the right",
-			x:    0, y: 0, gx: 0, gy: 1,
+			x:    0, y: 0, hx: 0, hy: 1,
 			b: Board{
 				[]string{" ", " ", "o", "o"},
 			},
 		},
 		{
 			name: "Can only place downward",
-			x:    0, y: 0, gx: 1, gy: 0,
+			x:    0, y: 0, hx: 1, hy: 0,
 			b: Board{
 				[]string{" ", "o", "o", "o"},
 				[]string{" ", "o", "o", "o"},
@@ -173,7 +172,7 @@ func TestGopherArea(t *testing.T) {
 		},
 		{
 			name: "Can only place upward",
-			x:    1, y: 1, gx: 0, gy: 1,
+			x:    1, y: 1, hx: 0, hy: 1,
 			b: Board{
 				[]string{"o", " ", "o", "o"},
 				[]string{"o", " ", "o", "o"},
@@ -183,12 +182,39 @@ func TestGopherArea(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(tt *testing.T) {
-			x, y := gopherArea(tc.x, tc.y, tc.b)
+			x, y := holeArea(tc.x, tc.y, tc.b)
 
-			fmt.Println("x: ", x)
-			fmt.Println("y: ", y)
-			assert.Equal(tt, tc.gx, x)
-			assert.Equal(tt, tc.gy, y)
+			assert.Equal(tt, tc.hx, x)
+			assert.Equal(tt, tc.hy, y)
+		})
+	}
+}
+
+func TestSurroundingGopher(t *testing.T) {
+	testCases := []struct {
+		name     string
+		x        int
+		y        int
+		b        Board
+		expected bool
+	}{
+		{
+			name: "Empty, in middle of board",
+			x:    1,
+			y:    1,
+			b: Board{
+				[]string{" ", " ", " "},
+				[]string{" ", " ", " "},
+				[]string{" ", " ", " "},
+			},
+			expected: true,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(tt *testing.T) {
+			actual := surroundingGopher(tc.x, tc.y, tc.b)
+			assert.Equal(tt, tc.expected, actual)
 		})
 	}
 }
