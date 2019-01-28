@@ -1,0 +1,7 @@
+package: github.com/jaysonesmith/gopherhole
+import: []
+testImport:
+- package: github.com/DATA-DOG/godog
+- package: github.com/stretchr/testify
+  subpackages:
+  - assert
