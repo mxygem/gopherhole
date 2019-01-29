@@ -23,7 +23,7 @@ Jayson Smith [@thatengjayson](https://twitter.com/thatengjayson)
 
 ## Acknowledgements
 
-This is my version of the game "Tents and Trees Puzzles" by the gentleman [@Froxaz](https://twitter.com/Frozax). I've enjoyed playing their game on my phone and through some thinking about writing something to solve levels decided to write my own version of the game.
+This is my version of the game ["Tents and Trees Puzzles"](https://play.google.com/store/apps/details?id=com.frozax.tentsandtrees) by the gentleman [@Froxaz](https://twitter.com/Frozax). I've enjoyed playing their game on my phone and through some thinking about writing something to solve levels decided to write my own version of the game.
 
 ## License
 
