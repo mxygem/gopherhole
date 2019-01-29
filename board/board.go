@@ -62,10 +62,7 @@ func (b Board) fillBoard(d, s int) {
 	for i := 0; i < dc; i++ {
 		pos := b.findPositions()
 
-		fmt.Printf("gopher @ %d, %d\n", pos.gx, pos.gy)
 		b[pos.gx][pos.gy] = "g"
-
-		fmt.Printf("hole @ %d, %d\n", pos.hx, pos.hy)
 		b[pos.hx][pos.hy] = "o"
 	}
 }
@@ -94,17 +91,19 @@ func difficulty(x, y, d int) int {
 	return int(math.Ceil((float64(x*y) * diffLevels[d]) / 2))
 }
 
+// findPositions looks for a valid position to
+// place a gopher and then finds a valid place to
+// place a hole based on that gopher if one
+// exists
 func (b Board) findPositions() positions {
-	hx, hy := b.gopherArea()
-	fmt.Printf("gopher position: %d, %d\n", hx, hy)
+	gx, gy := b.gopherArea()
 
-	gx, gy := b.holeArea(hx, hy)
-	fmt.Printf("hole position: %d, %d\n", gx, gy)
-	if gx == -1 {
+	hx, hy := b.holeArea(gx, gy)
+	if hx == -1 {
 		return b.findPositions()
 	}
 
-	return positions{hx: hx, hy: hy, gx: gx, gy: gy}
+	return positions{gx, gy, hx, hy}
 }
 
 func (b Board) gopherArea() (int, int) {
@@ -165,9 +164,9 @@ func (b Board) surroundingGopher(x, y int) bool {
 // bounds before checking for empty.
 // Returns -1, -1 if no suitable space was found
 func (b Board) holeArea(x, y int) (int, int) {
-	// determine gopher position
-	// position is "random" while taking into
-	// account the edge of the board
+	// determining hole position position is
+	// "random" while taking into account the edge
+	// of the board
 	// 0 = up
 	// 1 = right
 	// 2 = down
@@ -176,14 +175,15 @@ func (b Board) holeArea(x, y int) (int, int) {
 
 	for _, i := range di {
 		pos := [][]int{
-			[]int{x - 1, y},
-			[]int{x, y + 1},
 			[]int{x, y + 1},
 			[]int{x + 1, y},
+			[]int{x, y - 1},
+			[]int{x - 1, y},
 		}
 
 		px := pos[i-1][0]
 		py := pos[i-1][1]
+
 		ok := b.canPlace(px, py)
 		if !ok {
 			continue
@@ -211,11 +211,11 @@ func (b Board) canPlace(x, y int) bool {
 	}
 
 	// check occupancy
-	if b[x][y] != " " && b[x][y] != "o" && b[x][y] != "g" {
-		return false
+	if b[x][y] == " " {
+		return true
 	}
 
-	return true
+	return false
 }
 
 func (b Board) withinBounds(x, y int) bool {

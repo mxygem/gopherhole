@@ -64,34 +64,34 @@ func TestFillBoard(t *testing.T) {
 		d    int
 		b    *Board
 	}{
-		// {
-		// 	name: "Empty",
-		// 	d:    0,
-		// 	b: &Board{
-		// 		[]string{" ", " ", " ", " "},
-		// 		[]string{" ", " ", " ", " "},
-		// 		[]string{" ", " ", " ", " "},
-		// 		[]string{" ", " ", " ", " "},
-		// 	},
-		// },
-		// {
-		// 	name: "Easy",
-		// 	d:    1,
-		// 	b: &Board{
-		// 		[]string{" ", "g", "o", " "},
-		// 		[]string{" ", " ", " ", "g"},
-		// 		[]string{" ", "g", "o", "o"},
-		// 		[]string{" ", " ", " ", " "},
-		// 	},
-		// },
+		{
+			name: "Empty",
+			d:    0,
+			b: &Board{
+				[]string{" ", " ", " ", " "},
+				[]string{" ", " ", " ", " "},
+				[]string{" ", " ", " ", " "},
+				[]string{" ", " ", " ", " "},
+			},
+		},
+		{
+			name: "Easy",
+			d:    1,
+			b: &Board{
+				[]string{" ", " ", " ", "o"},
+				[]string{" ", " ", " ", "g"},
+				[]string{" ", "g", " ", " "},
+				[]string{" ", "o", "o", "g"},
+			},
+		},
 		{
 			name: "Medium",
 			d:    2,
 			b: &Board{
-				[]string{" ", "g", "o", " "},
-				[]string{" ", " ", " ", "g"},
-				[]string{" ", "g", "o", "o"},
-				[]string{" ", " ", " ", "g"},
+				[]string{" ", "g", " ", "o"},
+				[]string{" ", "o", " ", "g"},
+				[]string{" ", "g", " ", " "},
+				[]string{" ", "o", "o", "g"},
 			},
 		},
 	}
@@ -166,6 +166,26 @@ func TestGopherArea(t *testing.T) {
 			x: 3, y: 3,
 		},
 		{
+			name: "Force placement elsewhere via gopher next to initial position",
+			b: Board{
+				[]string{" ", " ", " ", " "},
+				[]string{" ", " ", "g", " "},
+				[]string{" ", " ", " ", " "},
+				[]string{" ", " ", " ", " "},
+			},
+			x: 3, y: 3,
+		},
+		{
+			name: "Force placement elsewhere via gopher near first two positions",
+			b: Board{
+				[]string{" ", " ", " ", " "},
+				[]string{" ", " ", "g", " "},
+				[]string{" ", " ", " ", " "},
+				[]string{" ", " ", "g", " "},
+			},
+			x: 1, y: 0,
+		},
+		{
 			name: "Force placement elsewhere via hole at initial position",
 			b: Board{
 				[]string{" ", " ", " ", " "},
@@ -180,10 +200,30 @@ func TestGopherArea(t *testing.T) {
 			b: Board{
 				[]string{" ", " ", " ", " "},
 				[]string{" ", " ", " ", "g"},
-				[]string{" ", " ", " ", "o"},
-				[]string{" ", " ", "o", "g"},
+				[]string{" ", " ", " ", " "},
+				[]string{" ", " ", " ", "g"},
 			},
 			x: 1, y: 0,
+		},
+		{
+			name: "Full board except one",
+			b: Board{
+				[]string{"g", "o", "o", "o"},
+				[]string{"o", "o", " ", "o"},
+				[]string{"g", "o", "o", "o"},
+				[]string{"o", "g", "o", "g"},
+			},
+			x: 1, y: 2,
+		},
+		{
+			name: "Force bottom row",
+			b: Board{
+				[]string{"o", "o", "o", "o"},
+				[]string{"o", "o", "o", "o"},
+				[]string{"o", "o", "o", "o"},
+				[]string{"o", "o", " ", "o"},
+			},
+			x: 3, y: 2,
 		},
 	}
 
@@ -213,21 +253,21 @@ func TestHoleArea(t *testing.T) {
 			name: "No available spots",
 			x:    0, y: 0, hx: -1, hy: -1,
 			b: Board{
-				[]string{" ", "o", "o", "o"},
+				[]string{"g", "o", "", ""},
 			},
 		},
 		{
 			name: "Can only place to the right",
 			x:    0, y: 0, hx: 0, hy: 1,
 			b: Board{
-				[]string{" ", " ", "o", "o"},
+				[]string{"g", " ", "o", "o"},
 			},
 		},
 		{
 			name: "Can only place downward",
 			x:    0, y: 0, hx: 1, hy: 0,
 			b: Board{
-				[]string{" ", "o", "o", "o"},
+				[]string{"g", "o", "o", "o"},
 				[]string{" ", "o", "o", "o"},
 			},
 		},
@@ -236,7 +276,17 @@ func TestHoleArea(t *testing.T) {
 			x:    1, y: 1, hx: 0, hy: 1,
 			b: Board{
 				[]string{"o", " ", "o", "o"},
-				[]string{"o", " ", "o", "o"},
+				[]string{"o", "g", "o", "o"},
+			},
+		},
+		{
+			name: "Can only place to the left",
+			x:    3, y: 3, hx: 3, hy: 2,
+			b: Board{
+				[]string{" ", " ", " ", " "},
+				[]string{" ", " ", " ", "g"},
+				[]string{" ", "g", "o", "o"},
+				[]string{" ", " ", " ", "g"},
 			},
 		},
 	}
