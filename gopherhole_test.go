@@ -7,7 +7,6 @@ import (
 
 func FeatureContext(s *godog.Suite) {
 	var sc steps.ScenarioContext
-	s.Step(`^a new game is requested with no board size set$`, sc.ANewGameIsRequestedWithNoBoardSizeSet)
-	s.Step(`^a (\d+)x(\d+) board must be returned$`, sc.AXBoardMustBeReturned)
-	s.Step(`^a new game is requested with a (\d+)x(\d+) board size$`, sc.ANewGameIsRequestedWithAXBoardSize)
+
+	sc.Steps(s)
 }

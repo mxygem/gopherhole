@@ -58,15 +58,17 @@ func TestDifficulty(t *testing.T) {
 	}
 }
 
-func TestFillBoard(t *testing.T) {
+func TestFill(t *testing.T) {
 	testCases := []struct {
 		name string
-		d    int
+		dim  int
+		diff int
 		b    *Board
 	}{
 		{
 			name: "Empty",
-			d:    0,
+			dim:  4,
+			diff: 0,
 			b: &Board{
 				[]string{" ", " ", " ", " "},
 				[]string{" ", " ", " ", " "},
@@ -75,8 +77,9 @@ func TestFillBoard(t *testing.T) {
 			},
 		},
 		{
-			name: "Easy",
-			d:    1,
+			name: "Medium",
+			dim:  4,
+			diff: 1,
 			b: &Board{
 				[]string{" ", " ", " ", "o"},
 				[]string{" ", " ", " ", "g"},
@@ -85,8 +88,9 @@ func TestFillBoard(t *testing.T) {
 			},
 		},
 		{
-			name: "Medium",
-			d:    2,
+			name: "Hard",
+			dim:  4,
+			diff: 2,
 			b: &Board{
 				[]string{" ", "g", " ", "o"},
 				[]string{" ", "o", " ", "g"},
@@ -94,16 +98,28 @@ func TestFillBoard(t *testing.T) {
 				[]string{" ", "o", "o", "g"},
 			},
 		},
+		{
+			name: "Hard 5x5",
+			dim:  5,
+			diff: 2,
+			b: &Board{
+				[]string{" ", " ", "o", " ", " "},
+				[]string{"g", "o", "g", " ", " "},
+				[]string{" ", " ", " ", "o", "g"},
+				[]string{"g", " ", " ", " ", " "},
+				[]string{"o", " ", "o", "g", " "},
+			},
+		},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(tt *testing.T) {
 			setRand(1)
-			b := New(4, 4)
+			b := New(tc.dim, tc.dim)
 
-			b.fillBoard(tc.d, 1)
+			b.Fill(tc.diff, 1)
 
-			b.print()
+			b.Print()
 			assert.Equal(tt, tc.b, &b)
 		})
 	}

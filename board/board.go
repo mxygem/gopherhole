@@ -9,6 +9,8 @@ import (
 
 var r *rand.Rand
 
+// Board is the representation of the game's
+// playing field
 type Board [][]string
 
 type positions struct {
@@ -45,11 +47,11 @@ func defaultDim(i int) int {
 	return i
 }
 
-// fillBoard pseudorandomly fills the board with
+// Fill pseudorandomly fills the board with
 // the desired number of gopher/hole pairs. It
 // also allows for a seed to be specified for
 // deterministic generation
-func (b Board) fillBoard(d, s int) {
+func (b Board) Fill(d, s int) {
 	// empty difficulty
 	if d == 0 {
 		return
@@ -61,9 +63,14 @@ func (b Board) fillBoard(d, s int) {
 	// find spots for all the desired gopher/hole pairs
 	for i := 0; i < dc; i++ {
 		pos := b.findPositions()
+		if pos.gx == -1 {
+			continue
+		}
 
 		b[pos.gx][pos.gy] = "g"
 		b[pos.hx][pos.hy] = "o"
+
+		// b.Print()
 	}
 }
 
@@ -85,8 +92,8 @@ var diffLevels = map[int]float64{0: 0.0, 1: 0.3, 2: 0.5}
 // board for the desired difficulty
 // levels:
 // 0 - empty
-// 1 - low - up to 30% of space
-// 2 - high - up to 50% of space
+// 1 - medium - up to 30% of space
+// 2 - hard - up to 50% of space
 func difficulty(x, y, d int) int {
 	return int(math.Ceil((float64(x*y) * diffLevels[d]) / 2))
 }
@@ -97,6 +104,9 @@ func difficulty(x, y, d int) int {
 // exists
 func (b Board) findPositions() positions {
 	gx, gy := b.gopherArea()
+	if gx == -1 {
+		return positions{-1, -1, -1, -1}
+	}
 
 	hx, hy := b.holeArea(gx, gy)
 	if hx == -1 {
@@ -113,21 +123,20 @@ func (b Board) gopherArea() (int, int) {
 	// look elsewhere.
 	// Not an optimal solution.
 	var x, y int
-	var usable bool
 
 	xl := len(b)
 	yl := len(b[0])
 
-	for usable == false {
+	for i := 0; i < xl*yl; i++ {
 		x = r.Intn(xl)
 		y = r.Intn(yl)
 
 		if b[x][y] == " " && !b.surroundingGopher(x, y) {
-			usable = true
+			return x, y
 		}
 	}
 
-	return x, y
+	return -1, -1
 }
 
 // surroundingGopher checks for whether or not
@@ -230,8 +239,9 @@ func (b Board) withinBounds(x, y int) bool {
 	return true
 }
 
-func (b Board) print() {
+func (b Board) Print() {
 	for _, r := range b {
 		fmt.Println(r)
 	}
+	fmt.Println("----------")
 }
