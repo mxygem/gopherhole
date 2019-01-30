@@ -74,6 +74,17 @@ func (b Board) Fill(d, s int) {
 	}
 }
 
+// Start removes the gophers from a board
+func (b Board) Start() {
+	for i, r := range b {
+		for j, c := range r {
+			if c == "g" {
+				b[i][j] = " "
+			}
+		}
+	}
+}
+
 // setRand sets the intended seed otherwise uses
 // a time based seed
 func setRand(s int) {

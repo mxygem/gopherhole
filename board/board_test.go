@@ -3,6 +3,8 @@ package board
 import (
 	"testing"
 
+	"github.com/jaysonesmith/gopherhole/utils"
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -433,4 +435,13 @@ func TestSurroundingGopher(t *testing.T) {
 			assert.Equal(tt, tc.expected, actual)
 		})
 	}
+}
+
+func TestStart(t *testing.T) {
+	b := New(5, 5)
+	b.Fill(1, 0)
+
+	b.Start()
+
+	assert.False(t, utils.GophersExist(b))
 }

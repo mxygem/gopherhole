@@ -6,7 +6,10 @@ import (
 	"github.com/DATA-DOG/godog"
 	"github.com/jaysonesmith/gopherhole/board"
 	"github.com/jaysonesmith/gopherhole/support"
+	"github.com/jaysonesmith/gopherhole/utils"
 )
+
+var difficulty = map[string]int{"medium": 1, "hard": 2}
 
 func (sc *ScenarioContext) Steps(s *godog.Suite) {
 	s.Step(`^a new game is requested with no board size set$`, sc.ANewGameIsRequestedWithNoBoardSizeSet)
@@ -14,6 +17,10 @@ func (sc *ScenarioContext) Steps(s *godog.Suite) {
 	s.Step(`^a new game is requested with a (\d+)x(\d+) board size$`, sc.ANewGameIsRequestedWithAXBoardSize)
 	s.Step(`^a (\d+)x(\d+) board is filled at (\w+) difficulty$`, sc.AXBoardIsFilledAtDifficulty)
 	s.Step(`^approximately (\d+) spaces will be filled$`, sc.ApproximatelySpacesWillBeFilled)
+
+	s.Step(`^a medium (\d+)x(\d+) board$`, sc.AMediumXBoard)
+	s.Step(`^a new game is started$`, sc.ANewGameIsStarted)
+	s.Step(`^no gophers should be returned to the player$`, sc.NoGophersShouldBeReturnedToThePlayer)
 }
 
 func (sc *ScenarioContext) ANewGameIsRequestedWithNoBoardSizeSet() error {
@@ -39,17 +46,36 @@ func (sc *ScenarioContext) AXBoardMustBeReturned(x, y int) error {
 
 func (sc *ScenarioContext) AXBoardIsFilledAtDifficulty(x, y int, d string) error {
 	sc.Board = board.New(x, y)
-
-	difficulty := map[string]int{"medium": 1, "hard": 2}
 	sc.Board.Fill(difficulty[d], 1)
 
 	return nil
 }
 
 func (sc *ScenarioContext) ApproximatelySpacesWillBeFilled(c int) error {
-
-	if f, ok := filledCount(c, sc.Board); !ok {
+	if f, ok := utils.FilledCount(c, sc.Board); !ok {
 		return fmt.Errorf("expected amount of spaces were not filled. expected: %d found: %d", c, f)
+	}
+
+	return nil
+}
+
+func (sc *ScenarioContext) AMediumXBoard(x, y int) error {
+	sc.Board = board.New(x, y)
+	sc.Board.Fill(1, 1)
+
+	return nil
+}
+
+func (sc *ScenarioContext) ANewGameIsStarted() error {
+	sc.Board.Start()
+
+	return nil
+}
+
+func (sc *ScenarioContext) NoGophersShouldBeReturnedToThePlayer() error {
+	if utils.GophersExist(sc.Board) {
+		sc.Board.Print()
+		return fmt.Errorf("Unexpected gophers found in board")
 	}
 
 	return nil
