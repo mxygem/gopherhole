@@ -17,10 +17,12 @@ func (sc *ScenarioContext) Steps(s *godog.Suite) {
 	s.Step(`^a new game is requested with a (\d+)x(\d+) board size$`, sc.ANewGameIsRequestedWithAXBoardSize)
 	s.Step(`^a (\d+)x(\d+) board is filled at (\w+) difficulty$`, sc.AXBoardIsFilledAtDifficulty)
 	s.Step(`^approximately (\d+) spaces will be filled$`, sc.ApproximatelySpacesWillBeFilled)
-
 	s.Step(`^a medium (\d+)x(\d+) board$`, sc.AMediumXBoard)
 	s.Step(`^a new game is started$`, sc.ANewGameIsStarted)
 	s.Step(`^no gophers should be returned to the player$`, sc.NoGophersShouldBeReturnedToThePlayer)
+
+	s.Step(`^a board full of (\w+)$`, sc.ABoardFullOf)
+	s.Step(`^(\w+) is entered to the first position$`, sc.IsEnteredToTheFirstPosition)
 }
 
 func (sc *ScenarioContext) ANewGameIsRequestedWithNoBoardSizeSet() error {
@@ -79,4 +81,12 @@ func (sc *ScenarioContext) NoGophersShouldBeReturnedToThePlayer() error {
 	}
 
 	return nil
+}
+
+func (sc *ScenarioContext) ABoardFullOf(item string) error {
+	return godog.ErrPending
+}
+
+func (sc *ScenarioContext) IsEnteredToTheFirstPosition(item string) error {
+	return godog.ErrPending
 }
