@@ -11,7 +11,7 @@ func FilledCount(c int, b [][]string) (int, bool) {
 		}
 	}
 
-	if f <= c-2 && f >= c+2 {
+	if f <= c-2 || f >= c+2 {
 		return f, false
 	}
 
@@ -28,4 +28,8 @@ func GophersExist(b [][]string) bool {
 	}
 
 	return false
+}
+
+func FillBoardWith(item string, b [][]string) [][]string {
+	return [][]string{}
 }
