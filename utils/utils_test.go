@@ -59,3 +59,62 @@ func TestFilledCount(t *testing.T) {
 		})
 	}
 }
+
+func TestGophersExist(t *testing.T) {
+	testCases := []struct {
+		name     string
+		b        [][]string
+		expected bool
+	}{
+		{
+			name: "Empty",
+		},
+		{
+			name: "Only holes",
+			b:    [][]string{[]string{"o"}, []string{"o"}},
+		},
+		{
+			name:     "Single gopher after hole",
+			b:        [][]string{[]string{"o"}, []string{"g"}},
+			expected: true,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(tt *testing.T) {
+			actual := GophersExist(tc.b)
+
+			assert.Equal(tt, tc.expected, actual)
+		})
+	}
+}
+
+func TestFullBoardOf(t *testing.T) {
+	testCases := []struct {
+		name     string
+		i        string
+		expected [][]string
+	}{
+		{
+			name:     "Empty",
+			expected: [][]string{},
+		},
+		{
+			name: "Fill with gophers",
+			i:    "g",
+			expected: [][]string{
+				[]string{"g", "g", "g"},
+				[]string{"g", "g", "g"},
+				[]string{"g", "g", "g"},
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(tt *testing.T) {
+			actual := FullBoardOf(tc.i)
+
+			assert.Equal(tt, tc.expected, actual)
+		})
+	}
+}

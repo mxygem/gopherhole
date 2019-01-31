@@ -1,5 +1,9 @@
 package utils
 
+import "fmt"
+
+// FilledCount counts how many positions are
+// filled in the current board
 func FilledCount(c int, b [][]string) (int, bool) {
 	var f int
 
@@ -18,6 +22,8 @@ func FilledCount(c int, b [][]string) (int, bool) {
 	return f, true
 }
 
+// GophersExist returns true if a gopher is in
+// the current board
 func GophersExist(b [][]string) bool {
 	for _, r := range b {
 		for _, s := range r {
@@ -30,6 +36,26 @@ func GophersExist(b [][]string) bool {
 	return false
 }
 
-func FillBoardWith(item string, b [][]string) [][]string {
-	return [][]string{}
+// FullBoardOf is a test helper that returns a
+// board full of a particular item/character
+func FullBoardOf(item string) [][]string {
+	if item == "" {
+		return [][]string{}
+	}
+
+	b := [][]string{
+		[]string{"", "", ""},
+		[]string{"", "", ""},
+		[]string{"", "", ""},
+	}
+
+	for i, r := range b {
+		for _, s := range r {
+			s = item
+			fmt.Println(s)
+		}
+		fmt.Println(b)
+	}
+
+	return b
 }
