@@ -7,6 +7,7 @@ import (
 	"github.com/jaysonesmith/gopherhole/board"
 	"github.com/jaysonesmith/gopherhole/support"
 	"github.com/jaysonesmith/gopherhole/utils"
+	"github.com/pkg/errors"
 )
 
 var difficulty = map[string]int{"medium": 1, "hard": 2}
@@ -93,9 +94,22 @@ func (sc *ScenarioContext) ABoardFullOf(x, y int, item string) error {
 }
 
 func (sc *ScenarioContext) IsEnteredToPosition(item string, x, y int) error {
-	return sc.Board.WriteChar(characters[item], x, y)
+	c := characters[item]
+	sc.Item = c
+	sc.X = x
+	sc.Y = y
+	return sc.Board.WriteChar(c, x, y)
 }
 
 func (sc *ScenarioContext) ThatPositionMustContainTheExpectedCharacter() error {
-	return godog.ErrPending
+	foundChar, err := sc.Board.CharAt(sc.X, sc.Y)
+	if err != nil {
+		return nil
+	}
+
+	if sc.Item != foundChar {
+		return errors.Errorf("%s not found at (%d, %d)", sc.Item, sc.X, sc.Y)
+	}
+
+	return nil
 }
