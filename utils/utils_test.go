@@ -89,10 +89,11 @@ func TestGophersExist(t *testing.T) {
 	}
 }
 
-func TestFullBoardOf(t *testing.T) {
+func TestFillBoardWith(t *testing.T) {
 	testCases := []struct {
 		name     string
-		i        string
+		item     string
+		board    [][]string
 		expected [][]string
 	}{
 		{
@@ -101,7 +102,12 @@ func TestFullBoardOf(t *testing.T) {
 		},
 		{
 			name: "Fill with gophers",
-			i:    "g",
+			item: "g",
+			board: [][]string{
+				[]string{" ", " ", " "},
+				[]string{" ", " ", " "},
+				[]string{" ", " ", " "},
+			},
 			expected: [][]string{
 				[]string{"g", "g", "g"},
 				[]string{"g", "g", "g"},
@@ -112,7 +118,7 @@ func TestFullBoardOf(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(tt *testing.T) {
-			actual := FullBoardOf(tc.i)
+			actual := FillBoardWith(tc.item, tc.board)
 
 			assert.Equal(tt, tc.expected, actual)
 		})
