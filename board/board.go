@@ -278,5 +278,9 @@ func (b Board) WriteChar(input string, x, y int) error {
 // CharAt returns the character at a particular
 // position if position is valid
 func (b Board) CharAt(x, y int) (string, error) {
+	if !b.withinBounds(x, y) {
+		return "", errors.Errorf("(%d, %d) is out of bounds", x, y)
+	}
+
 	return b[x][y], nil
 }

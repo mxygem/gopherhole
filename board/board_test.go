@@ -531,6 +531,13 @@ func TestCharAt(t *testing.T) {
 			board:    Board{[]string{" ", " ", " "}},
 			expected: " ",
 		},
+		{
+			name:  "Out of bounds position",
+			x:     1,
+			y:     0,
+			board: Board{[]string{" ", " ", " "}},
+			err:   errors.New("(1, 0) is out of bounds"),
+		},
 	}
 	for _, tc := range testCases {
 		t.Run(tc.name, func(tt *testing.T) {
