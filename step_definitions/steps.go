@@ -21,8 +21,9 @@ func (sc *ScenarioContext) Steps(s *godog.Suite) {
 	s.Step(`^a new game is started$`, sc.ANewGameIsStarted)
 	s.Step(`^no gophers should be returned to the player$`, sc.NoGophersShouldBeReturnedToThePlayer)
 
-	s.Step(`^a board full of (\w+)$`, sc.ABoardFullOf)
-	s.Step(`^(\w+) is entered to the first position$`, sc.IsEnteredToTheFirstPosition)
+	s.Step(`^a (\d+)x(\d+) sized board full of (\w+)$`, sc.ABoardFullOf)
+	s.Step(`^a (\w+) is entered into position \((\d+), (\d+)\)$`, sc.IsEnteredToPosition)
+	s.Step(`^that position must contain the expected character$`, sc.ThatPositionMustContainTheExpectedCharacter)
 }
 
 func (sc *ScenarioContext) ANewGameIsRequestedWithNoBoardSizeSet() error {
@@ -83,10 +84,17 @@ func (sc *ScenarioContext) NoGophersShouldBeReturnedToThePlayer() error {
 	return nil
 }
 
-func (sc *ScenarioContext) ABoardFullOf(item string) error {
+func (sc *ScenarioContext) ABoardFullOf(x, y int, item string) error {
+	sc.Board = board.New(x, y)
+	utils.FillBoardWith(item, sc.Board)
+
+	return nil
+}
+
+func (sc *ScenarioContext) IsEnteredToPosition(item string, x, y int) error {
 	return godog.ErrPending
 }
 
-func (sc *ScenarioContext) IsEnteredToTheFirstPosition(item string) error {
+func (sc *ScenarioContext) ThatPositionMustContainTheExpectedCharacter() error {
 	return godog.ErrPending
 }
