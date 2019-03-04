@@ -11,7 +11,7 @@
 1. Gophers must be places in one of the four vertically or horizontally adjacent holes. (Not diagonally)
 1. Gophers cannot be placed withing the 8 surrounding squares of another gopher.
 
-### Shapes Legend
+### Character Legend
 
 * G - gopher
 * O - hole
