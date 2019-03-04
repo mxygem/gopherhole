@@ -256,3 +256,10 @@ func (b Board) Print() {
 	}
 	fmt.Println("----------")
 }
+
+// WriteChar is the method used to add a
+// character to a board
+func (b Board) WriteChar(input string, x, y int) error {
+	b[x][y] = input
+	return nil
+}

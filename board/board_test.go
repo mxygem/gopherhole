@@ -445,3 +445,32 @@ func TestStart(t *testing.T) {
 
 	assert.False(t, utils.GophersExist(b))
 }
+
+func TestWriteChar(t *testing.T) {
+	testCases := []struct {
+		name     string
+		input    string
+		x        int
+		y        int
+		board    Board
+		expected Board
+		err      error
+	}{
+		{
+			name:     "Write gopher to empty position",
+			input:    "g",
+			x:        0,
+			y:        0,
+			board:    Board{[]string{" ", " ", " "}},
+			expected: Board{[]string{"g", " ", " "}},
+		},
+	}
+	for _, tc := range testCases {
+		t.Run(tc.name, func(tt *testing.T) {
+			err := tc.board.WriteChar(tc.input, tc.x, tc.y)
+
+			assert.Equal(tt, tc.expected, tc.board)
+			assert.Equal(tt, tc.err, err)
+		})
+	}
+}
