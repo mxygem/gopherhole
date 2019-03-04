@@ -486,6 +486,22 @@ func TestWriteChar(t *testing.T) {
 			board: Board{[]string{"h", " ", " "}},
 			err:   errors.New("holes cannot be overwritten"),
 		},
+		{
+			name:     "Replace gopher with earth",
+			input:    "e",
+			x:        0,
+			y:        0,
+			board:    Board{[]string{"g", " ", " "}},
+			expected: Board{[]string{"e", " ", " "}},
+		},
+		{
+			name:     "Replace earth with space",
+			input:    " ",
+			x:        0,
+			y:        0,
+			board:    Board{[]string{"e", " ", " "}},
+			expected: Board{[]string{" ", " ", " "}},
+		},
 	}
 	for _, tc := range testCases {
 		t.Run(tc.name, func(tt *testing.T) {
