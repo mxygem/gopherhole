@@ -1,5 +1,11 @@
 package utils
 
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
+
 // FilledCount counts how many positions are
 // filled in the current board
 func FilledCount(c int, b [][]string) (int, bool) {
@@ -48,4 +54,15 @@ func FillBoardWith(item string, b [][]string) [][]string {
 	}
 
 	return b
+}
+
+// CheckTestError provides a clean/reusable way
+// to validate that errors are either nil or what
+// is expected
+func CheckTestError(t testing.TB, tcErr, err error) {
+	if tcErr != nil {
+		assert.EqualError(t, err, tcErr.Error())
+	} else {
+		assert.NoError(t, err)
+	}
 }

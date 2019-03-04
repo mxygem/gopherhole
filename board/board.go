@@ -5,6 +5,8 @@ import (
 	"math"
 	"math/rand"
 	"time"
+
+	"github.com/pkg/errors"
 )
 
 var r *rand.Rand
@@ -260,6 +262,11 @@ func (b Board) Print() {
 // WriteChar is the method used to add a
 // character to a board
 func (b Board) WriteChar(input string, x, y int) error {
+	if !b.withinBounds(x, y) {
+		return errors.Errorf("(%d, %d) is out of bounds", x, y)
+	}
+
 	b[x][y] = input
+
 	return nil
 }

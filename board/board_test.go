@@ -1,6 +1,7 @@
 package board
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/jaysonesmith/gopherhole/utils"
@@ -464,13 +465,24 @@ func TestWriteChar(t *testing.T) {
 			board:    Board{[]string{" ", " ", " "}},
 			expected: Board{[]string{"g", " ", " "}},
 		},
+		{
+			name:  "Out of bounds write request",
+			input: "g",
+			x:     1,
+			y:     0,
+			board: Board{[]string{" ", " ", " "}},
+			err:   errors.New("(1, 0) is out of bounds"),
+		},
 	}
 	for _, tc := range testCases {
 		t.Run(tc.name, func(tt *testing.T) {
 			err := tc.board.WriteChar(tc.input, tc.x, tc.y)
 
-			assert.Equal(tt, tc.expected, tc.board)
-			assert.Equal(tt, tc.err, err)
+			if tc.expected != nil {
+				assert.Equal(tt, tc.expected, tc.board)
+			}
+
+			utils.CheckTestError(tt, tc.err, err)
 		})
 	}
 }
