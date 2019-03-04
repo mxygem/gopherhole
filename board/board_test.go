@@ -514,3 +514,30 @@ func TestWriteChar(t *testing.T) {
 		})
 	}
 }
+
+func TestCharAt(t *testing.T) {
+	testCases := []struct {
+		name     string
+		x        int
+		y        int
+		board    Board
+		expected string
+		err      error
+	}{
+		{
+			name:     "Empty at position",
+			x:        0,
+			y:        0,
+			board:    Board{[]string{"e", " ", " "}},
+			expected: " ",
+		},
+	}
+	for _, tc := range testCases {
+		t.Run(tc.name, func(tt *testing.T) {
+			actual, err := tc.board.CharAt(tc.x, tc.y)
+
+			assert.Equal(tt, tc.expected, actual)
+			utils.CheckTestError(tt, tc.err, err)
+		})
+	}
+}
