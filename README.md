@@ -13,9 +13,9 @@
 
 ### Character Legend
 
-* G - gopher
-* O - hole
-* E - earth
+* g - gopher
+* o - hole
+* e - earth
 
 ## Contact
 
