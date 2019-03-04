@@ -1,10 +1,10 @@
-Feature: Writing letters
+Feature: Writing characters
 
    In order to play the game, a player must be
-   able to write letter to particular places on
+   able to write characters to particular places on
    the board
 
-   Holes cannot be overwritten
+   Holes cannot be written or overwritten
 
    Available options:
     * "g" - gopher
@@ -12,8 +12,9 @@ Feature: Writing letters
     * " " - space (unknown/default)
 
    Scenario Outline: Successful writes
-    Given a board full of <board_fill>
-    When <test_type> is entered to the first position
+    Given a 3x3 sized board full of <board_fill>
+    When a <test_type> is entered into position (0, 0)
+    Then that position must contain the expected character
     Examples:
     | board_fill | test_type |
     | space      | gopher    |
@@ -22,4 +23,4 @@ Feature: Writing letters
 
    Scenario: Unsuccessful write
     Given a board full of holes
-    When gopher is entered to the first position
+    When a gopher is entered to the first position
