@@ -532,6 +532,13 @@ func TestCharAt(t *testing.T) {
 			expected: " ",
 		},
 		{
+			name:     "Gopher at position",
+			x:        0,
+			y:        2,
+			board:    Board{[]string{" ", " ", "g"}},
+			expected: "g",
+		},
+		{
 			name:  "Out of bounds position",
 			x:     1,
 			y:     0,
