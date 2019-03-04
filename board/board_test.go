@@ -473,6 +473,19 @@ func TestWriteChar(t *testing.T) {
 			board: Board{[]string{" ", " ", " "}},
 			err:   errors.New("(1, 0) is out of bounds"),
 		},
+		{
+			name:  "Holes cannot be written",
+			input: "h",
+			err:   errors.New("holes cannot be placed"),
+		},
+		{
+			name:  "Holes cannot be overwritten",
+			input: "g",
+			x:     0,
+			y:     0,
+			board: Board{[]string{"h", " ", " "}},
+			err:   errors.New("holes cannot be overwritten"),
+		},
 	}
 	for _, tc := range testCases {
 		t.Run(tc.name, func(tt *testing.T) {
@@ -481,7 +494,6 @@ func TestWriteChar(t *testing.T) {
 			if tc.expected != nil {
 				assert.Equal(tt, tc.expected, tc.board)
 			}
-
 			utils.CheckTestError(tt, tc.err, err)
 		})
 	}

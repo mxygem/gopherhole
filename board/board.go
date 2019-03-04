@@ -262,8 +262,12 @@ func (b Board) Print() {
 // WriteChar is the method used to add a
 // character to a board
 func (b Board) WriteChar(input string, x, y int) error {
-	if !b.withinBounds(x, y) {
+	if input == "h" {
+		return errors.New("holes cannot be placed")
+	} else if !b.withinBounds(x, y) {
 		return errors.Errorf("(%d, %d) is out of bounds", x, y)
+	} else if b[x][y] == "h" {
+		return errors.New("holes cannot be overwritten")
 	}
 
 	b[x][y] = input
