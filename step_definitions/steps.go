@@ -92,7 +92,7 @@ func (sc *ScenarioContext) ABoardFullOf(x, y int, item string) error {
 }
 
 func (sc *ScenarioContext) IsEnteredToPosition(item string, x, y int) error {
-	return godog.ErrPending
+	return sc.Board.WriteChar(item, x, y)
 }
 
 func (sc *ScenarioContext) ThatPositionMustContainTheExpectedCharacter() error {
