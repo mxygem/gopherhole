@@ -528,7 +528,7 @@ func TestCharAt(t *testing.T) {
 			name:     "Empty at position",
 			x:        0,
 			y:        0,
-			board:    Board{[]string{"e", " ", " "}},
+			board:    Board{[]string{" ", " ", " "}},
 			expected: " ",
 		},
 	}

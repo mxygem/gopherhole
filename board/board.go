@@ -278,5 +278,5 @@ func (b Board) WriteChar(input string, x, y int) error {
 // CharAt returns the character at a particular
 // position if position is valid
 func (b Board) CharAt(x, y int) (string, error) {
-	return " ", nil
+	return b[x][y], nil
 }
