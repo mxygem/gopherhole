@@ -10,6 +10,7 @@ import (
 )
 
 var difficulty = map[string]int{"medium": 1, "hard": 2}
+var characters = map[string]string{"gopher": "g", "earth": "e", "space": " "}
 
 func (sc *ScenarioContext) Steps(s *godog.Suite) {
 	s.Step(`^a new game is requested with no board size set$`, sc.ANewGameIsRequestedWithNoBoardSizeSet)
@@ -86,13 +87,13 @@ func (sc *ScenarioContext) NoGophersShouldBeReturnedToThePlayer() error {
 
 func (sc *ScenarioContext) ABoardFullOf(x, y int, item string) error {
 	sc.Board = board.New(x, y)
-	utils.FillBoardWith(item, sc.Board)
+	utils.FillBoardWith(characters[item], sc.Board)
 
 	return nil
 }
 
 func (sc *ScenarioContext) IsEnteredToPosition(item string, x, y int) error {
-	return sc.Board.WriteChar(item, x, y)
+	return sc.Board.WriteChar(characters[item], x, y)
 }
 
 func (sc *ScenarioContext) ThatPositionMustContainTheExpectedCharacter() error {
