@@ -11,8 +11,15 @@ import (
 )
 
 var difficulty = map[string]int{"medium": 1, "hard": 2}
-var characters = map[string]string{"gopher": "g", "earth": "e", "space": " "}
+var characters = map[string]string{
+	"gopher": "g", "gophers": "g",
+	"hole": "h", "holes": "h",
+	"space": " ", "spaces": " ",
+	"earth": "e",
+}
 
+// Steps is a mapping of gherkin regex to step
+// defintion methods
 func (sc *ScenarioContext) Steps(s *godog.Suite) {
 	s.Step(`^a new game is requested with no board size set$`, sc.ANewGameIsRequestedWithNoBoardSizeSet)
 	s.Step(`^a (\d+)x(\d+) board must be returned$`, sc.AXBoardMustBeReturned)
@@ -26,6 +33,8 @@ func (sc *ScenarioContext) Steps(s *godog.Suite) {
 	s.Step(`^a (\d+)x(\d+) sized board full of (\w+)$`, sc.ABoardFullOf)
 	s.Step(`^a (\w+) is entered into position \((\d+), (\d+)\)$`, sc.IsEnteredToPosition)
 	s.Step(`^that position must contain the expected character$`, sc.ThatPositionMustContainTheExpectedCharacter)
+	s.Step(`^that position must contain a (\w+) character$`, sc.ThatPositionMustContanACharacter)
+	s.Step(`^a placement error of "([^"]*)" must be returned$`, sc.APlacementErrorOfMustBeReturned)
 }
 
 func (sc *ScenarioContext) ANewGameIsRequestedWithNoBoardSizeSet() error {
@@ -93,12 +102,16 @@ func (sc *ScenarioContext) ABoardFullOf(x, y int, item string) error {
 	return nil
 }
 
-func (sc *ScenarioContext) IsEnteredToPosition(item string, x, y int) error {
-	c := characters[item]
-	sc.Item = c
+func (sc *ScenarioContext) IsEnteredToPosition(char string, x, y int) error {
+	c := characters[char]
+	sc.Char = c
 	sc.X = x
 	sc.Y = y
-	return sc.Board.WriteChar(c, x, y)
+	if err := sc.Board.WriteChar(c, x, y); err != nil {
+		sc.Errors.PlacementError = err.Error()
+	}
+
+	return nil
 }
 
 func (sc *ScenarioContext) ThatPositionMustContainTheExpectedCharacter() error {
@@ -107,8 +120,29 @@ func (sc *ScenarioContext) ThatPositionMustContainTheExpectedCharacter() error {
 		return nil
 	}
 
-	if sc.Item != foundChar {
-		return errors.Errorf("%s not found at (%d, %d)", sc.Item, sc.X, sc.Y)
+	if sc.Char != foundChar {
+		return errors.Errorf("%s not found at (%d, %d)", sc.Char, sc.X, sc.Y)
+	}
+
+	return nil
+}
+
+func (sc *ScenarioContext) ThatPositionMustContanACharacter(char string) error {
+	foundChar, err := sc.Board.CharAt(sc.X, sc.Y)
+	if err != nil {
+		return nil
+	}
+
+	if characters[char] != foundChar {
+		return errors.Errorf("%s not found at (%d, %d)", sc.Char, sc.X, sc.Y)
+	}
+
+	return nil
+}
+
+func (sc *ScenarioContext) APlacementErrorOfMustBeReturned(err string) error {
+	if sc.Errors.PlacementError != err {
+		return errors.Errorf(`expected error of "%s" but found "%s"`, err, sc.Errors.PlacementError)
 	}
 
 	return nil

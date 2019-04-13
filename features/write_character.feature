@@ -12,15 +12,21 @@ Feature: Writing characters
     * " " - space (unknown/default)
 
    Scenario Outline: Successful writes
-    Given a 3x3 sized board full of <board_fill>
-    When a <test_type> is entered into position (0, 0)
-    Then that position must contain the expected character
-    Examples:
-    | board_fill | test_type |
-    | space      | gopher    |
-    | gopher     | earth     |
-    | earth      | space     |
+      Given a 3x3 sized board full of <board_fill>
+      When a <char_type> is entered into position (0, 0)
+      Then that position must contain the expected character
+      Examples:
+      | board_fill | char_type |
+      | spaces     | gopher    |
+      | gophers    | earth     |
+      | earth      | space     |
 
-   Scenario: Unsuccessful write
-    Given a board full of holes
-    When a gopher is entered to the first position
+   Scenario Outline: Unsuccessful writes
+      Given a 3x3 sized board full of <board_fill>
+      When a <char_type> is entered into position (0, 0)
+      Then a placement error of <error> must be returned
+      And that position must contain a <orig_char> character
+      Examples:
+      | board_fill | char_type | orig_char | error                         |
+      | holes      | gopher    | hole      | "holes cannot be overwritten" |
+      | spaces     | hole      | space     | "holes cannot be placed"      |

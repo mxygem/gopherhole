@@ -5,8 +5,13 @@ import (
 )
 
 type ScenarioContext struct {
-	Board board.Board
-	Item  string
-	X     int
-	Y     int
+	Board  board.Board
+	Char   string
+	X      int
+	Y      int
+	Errors Errors
+}
+
+type Errors struct {
+	PlacementError string
 }
