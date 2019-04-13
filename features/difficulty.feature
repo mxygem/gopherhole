@@ -28,6 +28,6 @@ Feature: Game difficulty
       Examples:
       | dimension | count |
       | 4x4       | 8     |
-      | 5x5       | 13    |
-      | 50x50     | 1250  |
-      | 100x75    | 3750  |
+      | 5x5       | 10    |
+      | 50x50     | 940   |
+      | 100x75    | 2822  |
