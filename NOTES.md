@@ -13,6 +13,12 @@
 * Timing info
 * Reset button
 * Undo button
+* Game
+    * User
+    * User stats
+    * hints
+* Create and store seed for levels when made so that they can be replayed in the future.
+
 
 ## Thoughts/ideas
 
