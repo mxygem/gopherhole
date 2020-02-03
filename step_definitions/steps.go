@@ -33,7 +33,7 @@ func (sc *ScenarioContext) Steps(s *godog.Suite) {
 	s.Step(`^a (\d+)x(\d+) sized board full of (\w+)$`, sc.ABoardFullOf)
 	s.Step(`^a (\w+) is entered into position \((\d+), (\d+)\)$`, sc.IsEnteredToPosition)
 	s.Step(`^that position must contain the expected character$`, sc.ThatPositionMustContainTheExpectedCharacter)
-	s.Step(`^that position must contain a (\w+) character$`, sc.ThatPositionMustContanACharacter)
+	s.Step(`^that position must contain a (\w+) character$`, sc.ThatPositionMustContainACharacter)
 	s.Step(`^a placement error of "([^"]*)" must be returned$`, sc.APlacementErrorOfMustBeReturned)
 }
 
@@ -127,7 +127,7 @@ func (sc *ScenarioContext) ThatPositionMustContainTheExpectedCharacter() error {
 	return nil
 }
 
-func (sc *ScenarioContext) ThatPositionMustContanACharacter(char string) error {
+func (sc *ScenarioContext) ThatPositionMustContainACharacter(char string) error {
 	foundChar, err := sc.Board.CharAt(sc.X, sc.Y)
 	if err != nil {
 		return nil

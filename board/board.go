@@ -264,11 +264,19 @@ func (b Board) Print() {
 func (b Board) WriteChar(input string, x, y int) error {
 	if input == "h" {
 		return errors.New("holes cannot be placed")
-	} else if !b.withinBounds(x, y) {
+	}
+
+	ca, err := b.CharAt(x, y)
+	if err != nil {
 		return errors.Errorf("(%d, %d) is out of bounds", x, y)
-	} else if b[x][y] == "h" {
+	} else if ca == "h" {
 		return errors.New("holes cannot be overwritten")
 	}
+
+	// need to check for other errors:
+	// gophers too close
+
+	// noop on overwriting a gopher
 
 	b[x][y] = input
 
