@@ -19,6 +19,10 @@
     * hints
 * Create and store seed for levels when made so that they can be replayed in the future.
 
+## Errors to check for
+    * Gophers too close
+    * Rows/Columns having too many gophers
+    * Rows/Columns being filled but not having enough gophers
 
 ## Thoughts/ideas
 

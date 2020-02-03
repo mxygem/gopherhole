@@ -271,12 +271,10 @@ func (b Board) WriteChar(input string, x, y int) error {
 		return errors.Errorf("(%d, %d) is out of bounds", x, y)
 	} else if ca == "h" {
 		return errors.New("holes cannot be overwritten")
+	} else if input == ca {
+		// no need to bother overwriting the same character
+		return nil
 	}
-
-	// need to check for other errors:
-	// gophers too close
-
-	// noop on overwriting a gopher
 
 	b[x][y] = input
 
