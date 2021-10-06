@@ -76,8 +76,8 @@ func (b Board) Fill(d, s int) {
 	}
 }
 
-// Start removes the gophers from a board
-func (b Board) Start() {
+// RemoveGophers removes the gophers from a board
+func (b Board) RemoveGophers() {
 	for i, r := range b {
 		for j, c := range r {
 			if c == "g" {

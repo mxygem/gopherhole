@@ -438,11 +438,11 @@ func TestSurroundingGopher(t *testing.T) {
 	}
 }
 
-func TestStart(t *testing.T) {
+func TestRemoveGophers(t *testing.T) {
 	b := New(5, 5)
 	b.Fill(1, 0)
 
-	b.Start()
+	b.RemoveGophers()
 
 	assert.False(t, utils.GophersExist(b))
 }

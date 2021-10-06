@@ -81,7 +81,7 @@ func (sc *ScenarioContext) AMediumXBoard(x, y int) error {
 }
 
 func (sc *ScenarioContext) ANewGameIsStarted() error {
-	sc.Board.Start()
+	sc.Board.RemoveGophers()
 
 	return nil
 }
